@@ -1,0 +1,1964 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>글로벌번역 - 전문 번역 서비스</title>
+<meta name="description" content="빠르고 신뢰할 수 있는 전문 번역 서비스. 50개 이상의 언어로 비즈니스 성공을 위한 번역 솔루션을 제공합니다.">
+
+<!-- Tailwind CSS via CDN -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+<!-- Google Fonts - Inter -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- Lucide Icons via CDN -->
+<script src="https://unpkg.com/lucide@latest"></script>
+
+<!-- Custom Tailwind Configuration -->
+<script>
+    tailwind.config = {
+    theme: {
+        extend: {
+        colors: {
+            primary: 'rgb(113 6 0)', // Red color from design1-5-sharp.html
+            primaryDark: '#af0a00', // Darker version of primary
+            secondary: '#d09101', // Black from design1-5-sharp.html
+            secondaryDark: '#af0a00', // Darker version of secondary
+            accent: '#71060026', // Keeping the bright accent color
+            accentDark: '#b9e005', // Darker version of accent
+            muted: '#F0F4F9', // Light background
+            mutedForeground: '#64748B', // Text color for descriptions
+        },
+        fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+        },
+        borderRadius: {
+            'none': '0',
+            'sm': '0px',
+            DEFAULT: '0px',
+            'md': '0px',
+            'lg': '0px',
+            'xl': '0px',
+            'full': '0px',
+        },
+        },
+    },
+    };
+</script>
+
+<style>
+    /* Custom styles */
+    .tab-content {
+    display: none;
+    }
+    
+    .tab-content.active {
+    display: block;
+    }
+    
+    .tab-trigger.active {
+    background-color: white;
+    color: rgb(155 8 0);
+    }
+    
+    .language-tab-content {
+    display: none;
+    }
+    
+    .language-tab-content.active {
+    display: block;
+    }
+    
+    .language-tab-trigger.active {
+    background-color: white;
+    color: rgb(155 8 0);
+    }
+    
+    .accordion-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+    }
+    
+    .accordion-item.active .accordion-content {
+    max-height: 500px;
+    }
+    
+    .accordion-trigger .chevron {
+    transition: transform 0.3s;
+    }
+    
+    .accordion-item.active .accordion-trigger .chevron {
+    transform: rotate(180deg);
+    }
+    
+    .dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    min-width: 120px;
+    background-color: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 0px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    z-index: 50;
+    }
+    
+    .dropdown-content.show {
+    display: block;
+    }
+    
+    /* Carousel Styles */
+    .carousel-container {
+    width: 100%;
+    overflow: hidden;
+    padding: 0 2rem; /* Add padding to give space for arrows on mobile */
+    }
+    
+    .carousel-inner {
+    display: flex;
+    width: 100%;
+    transition: transform 0.4s ease-in-out;
+    }
+    
+    .carousel-item {
+    flex: 0 0 100%;
+    width: 100%;
+    opacity: 0.9;
+    transition: opacity 0.3s ease;
+    }
+    
+    .carousel-indicator.active,
+    .carousel-indicator.bg-primary {
+    width: 8px;
+    transform: scale(1.2);
+    transition: all 0.3s ease;
+    border-radius: 0px;
+    }
+    
+    .carousel-prev,
+    .carousel-next {
+    opacity: 0.7;
+    transition: all 0.3s ease;
+    border-radius: 0px;
+    }
+    
+    .carousel-prev:hover,
+    .carousel-next:hover {
+    opacity: 1;
+    background-color: rgba(255, 255, 255, 0.9);
+    }
+    
+    /* Responsive fixes for carousel */
+    @media (max-width: 768px) {
+    .carousel-container {
+        padding: 0 1rem; /* Less padding on very small screens */
+    }
+    
+    .carousel-prev, 
+    .carousel-next {
+        padding: 0.5rem; /* Smaller buttons on mobile */
+        transform: scale(0.9);
+    }
+    
+    .carousel-prev {
+        left: 0.25rem; /* Closer to edge on mobile */
+    }
+    
+    .carousel-next {
+        right: 0.25rem; /* Closer to edge on mobile */
+    }
+    
+    .carousel-item img {
+        transition: transform 0.3s ease-in-out;
+    }
+    
+    .carousel-item:hover img {
+        transform: scale(1.02);
+    }
+    }
+    
+    @media (max-width: 480px) {
+    .carousel-indicators {
+        margin-top: 0.5rem;
+    }
+    
+    .carousel-indicator {
+        width: 6px;
+        height: 6px;
+    }
+    }
+    
+    /* Section Fade In Animation */
+    @keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    }
+    
+    .fade-in-section {
+    opacity: 0;
+    transform: translateY(15px);
+    visibility: hidden;
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    will-change: opacity, visibility;
+    }
+    
+    .fade-in-section.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+    visibility: visible;
+    }
+    
+    /* Modal Animation */
+    @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+    }
+    
+    @keyframes zoomIn {
+    from { transform: scale(0.95); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+    }
+    
+    .animate-fade-in {
+    animation: fadeIn 0.3s ease-in-out forwards;
+    }
+    
+    #modalImage {
+    animation: zoomIn 0.3s ease-out forwards;
+    }
+    
+    /* Hover effect for carousel images */
+    .carousel-image-wrapper {
+    overflow: hidden;
+    position: relative;
+    }
+    
+    .carousel-image-wrapper::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 1;
+    }
+    
+    .carousel-image-wrapper::after {
+    content: '🔍';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.7);
+    color: white;
+    font-size: 24px;
+    opacity: 0;
+    transition: all 0.3s ease;
+    z-index: 2;
+    }
+    
+    .carousel-image-wrapper:hover::before {
+    opacity: 1;
+    }
+    
+    .carousel-image-wrapper:hover::after {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+    }
+    
+    /* Smooth scrolling for all hash links */
+    html {
+    scroll-behavior: smooth;
+    }
+    
+    /* Custom animation duration for smoother scrolling - optional refinement */
+    @media (prefers-reduced-motion: no-preference) {
+    html {
+        scroll-behavior: smooth;
+    }
+    }
+    
+    /* Make all elements sharp - override any rounded corners */
+    * {
+    border-radius: 0 !important;
+    }
+    
+    /* Buttons, input fields, cards should all be sharp */
+    button, input, select, textarea, .card, .shadow-md, .shadow-lg, 
+    .dropdown-content, .modal-content, img {
+    border-radius: 0 !important;
+    }
+    
+    /* Modal animations */
+    @keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+    }
+    
+    @keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+    }
+    
+    @keyframes scaleIn {
+    0% {
+        transform: scale(0.95);
+        opacity: 0;
+    }
+    70% {
+        transform: scale(1.02);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    }
+    
+    @keyframes scaleOut {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(0.95);
+        opacity: 0;
+    }
+    }
+    
+    #quoteRequestModal {
+    transition: opacity 0.3s ease;
+    }
+    
+    #quoteRequestModal.hidden {
+    display: none;
+    }
+    
+    #quoteRequestModal.fade-in {
+    animation: fadeIn 0.3s ease forwards;
+    }
+    
+    #quoteRequestModal.fade-out {
+    animation: fadeOut 0.3s ease forwards;
+    }
+    
+    #quoteRequestModal > div {
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+    
+    #quoteRequestModal.fade-in > div {
+    animation: scaleIn 0.3s ease forwards;
+    }
+    
+    #quoteRequestModal.fade-out > div {
+    animation: scaleOut 0.3s ease forwards;
+    }
+    
+    /* Partners Modal Animation */
+    #partnersModal {
+    transition: opacity 0.3s ease;
+    }
+    
+    #partnersModal.hidden {
+    display: none;
+    }
+    
+    #partnersModal.fade-in {
+    animation: fadeIn 0.3s ease forwards;
+    }
+    
+    #partnersModal.fade-out {
+    animation: fadeOut 0.3s ease forwards;
+    }
+    
+    #partnersModal > div {
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+    
+    #partnersModal.fade-in > div {
+    animation: scaleIn 0.3s ease forwards;
+    }
+    
+    #partnersModal.fade-out > div {
+    animation: scaleOut 0.3s ease forwards;
+    }
+    
+    /* Mobile Menu Animation Styles */
+    #mobile-menu {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+
+    #mobile-menu.show {
+    opacity: 1;
+    visibility: visible;
+    }
+
+    #mobile-menu .bg-white {
+    transform: translateX(-100%);
+    transition: transform 0.4s ease;
+    }
+
+    #mobile-menu.show .bg-white {
+    transform: translateX(0);
+    }
+
+    /* Mobile Bottom Menu Styles */
+    .mobile-bottom-menu {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: white;
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.08);
+    z-index: 40;
+    padding: 4px 16px;
+    display: none;
+    border-top: 1px solid #f0f0f0;
+    transform: translateY(100%);
+    animation: slideUp 0.3s forwards;
+    }
+
+    @keyframes slideUp {
+    to {
+        transform: translateY(0);
+    }
+    }
+
+    /* Make the mobile menu more app-like with a subtle rounded top */
+    @media (max-width: 768px) {
+    .mobile-bottom-menu {
+        display: block;
+        border-top-left-radius: 16px;
+        border-top-right-radius: 16px;
+        padding-bottom: env(safe-area-inset-bottom, 16px); /* Support for iPhone X+ */
+    }
+    
+    /* Add more space at the bottom for the menu */
+    body {
+        padding-bottom: 90px;
+    }
+    
+    /* Hide the desktop sticky menu */
+    .sticky-side-menu {
+        display: none;
+    }
+    }
+    
+    .mobile-bottom-menu .menu-items {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    padding: 0 4px;
+    }
+
+    .mobile-bottom-menu .menu-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #6b7280;
+    font-size: 0.75rem;
+    padding: 10px 8px;
+    position: relative;
+    transition: all 0.2s ease;
+    width: 25%;
+    border-radius: 10px;
+    margin: 0 2px;
+    }
+    
+    /* Add vertical separators between menu items */
+    .mobile-bottom-menu .menu-item:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 25%;
+    right: 0;
+    height: 50%;
+    width: 1px;
+    background-color: #e5e7eb; /* Light gray separator */
+    }
+    
+    /* Make the active menu item more visible with a subtle background */
+    .mobile-bottom-menu .menu-item.active {
+    color: #374151; /* Darker gray for text */
+    background-color: #f3f4f6; /* Light gray background */
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+    
+    .mobile-bottom-menu .menu-item.active svg {
+    color: rgb(113 6 0); /* Primary color only for the active icon */
+    }
+    
+    /* Active indicator at the bottom */
+    .mobile-bottom-menu .menu-item.active::before {
+    content: '';
+    position: absolute;
+    bottom: 2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30%;
+    height: 3px;
+    border-radius: 3px;
+    background-color: rgb(113 6 0); /* Match primary color */
+    }
+    
+    /* Special styling for quote request but more subtle */
+    .mobile-bottom-menu .menu-item.quote-request-link {
+    color: #4b5563; /* Standard gray text */
+    }
+    
+    .mobile-bottom-menu .menu-item.quote-request-link svg {
+    color: rgb(113 6 0); /* Only the icon remains red */
+    }
+
+    .mobile-bottom-menu .menu-item svg {
+    margin-bottom: 4px;
+    transition: color 0.2s ease;
+    }
+
+    /* Create a slight bounce effect for the icons */
+    .mobile-bottom-menu .menu-item:hover svg {
+    animation: bounce 0.4s;
+    }
+    
+    /* Add a background highlight effect when pressed */
+    .mobile-bottom-menu .menu-item:active {
+    background-color: #e5e7eb;
+    transform: scale(0.97);
+    }
+
+    @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+    }
+
+    @media (max-width: 768px) {
+    .mobile-bottom-menu {
+        display: block;
+    }
+    
+    .sticky-side-menu {
+        display: none;
+    }
+    
+    /* Add padding to the bottom of the page to account for the mobile menu */
+    body {
+        padding-bottom: 80px; /* Increased padding for larger menu */
+    }
+    }
+
+    @media (max-width: 640px) {
+    #quoteRequestModal .relative {
+        max-height: 90vh;
+    }
+    }
+</style>
+</head>
+<body class="min-h-screen flex flex-col font-sans text-gray-900 bg-white break-keep">
+<!-- Sticky Contact Menu -->
+<div class="fixed right-0 top-1/2 transform -translate-y-1/2 z-40 sticky-side-menu">
+    <div class="flex flex-col">
+    <a href="tel:02-123-4567" class="bg-primary text-white p-3 flex flex-col items-center justify-center hover:bg-primaryDark transition-colors shadow-lg">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-phone h-5 w-5 mb-1">
+        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+        </svg>
+        <span class="text-xs">전화</span>
+    </a>
+    <a href="mailto:contact@globaltrans.kr" class="bg-secondary text-white p-3 flex flex-col items-center justify-center hover:bg-secondaryDark transition-colors shadow-lg">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-mail h-5 w-5 mb-1">
+        <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+        <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+        </svg>
+        <span class="text-xs">이메일</span>
+    </a>
+    <a href="#" class="bg-primary text-white p-3 flex flex-col items-center justify-center hover:bg-primaryDark transition-colors shadow-lg quote-request-link">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 mb-1">
+        <path d="M3 5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+        <path d="M17 8h-10"></path>
+        <path d="M17 12h-10"></path>
+        <path d="M17 16h-6"></path>
+        <path d="m7.5 15.5-1 1-1-1"></path>
+        </svg>
+        <span class="text-xs">견적서</span>
+    </a>
+    </div>
+</div>
+
+<!-- Mobile Bottom Menu -->
+<div class="mobile-bottom-menu">
+    <div class="menu-items">
+    <a href="tel:02-123-4567" class="menu-item">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6">
+        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+        </svg>
+        <span>전화</span>
+    </a>
+    <a href="mailto:contact@globaltrans.kr" class="menu-item">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6">
+        <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+        <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+        </svg>
+        <span>이메일</span>
+    </a>
+    <a href="#" class="menu-item quote-request-link">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6">
+        <path d="M3 5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+        <path d="M17 8h-10"></path>
+        <path d="M17 12h-10"></path>
+        <path d="M17 16h-6"></path>
+        <path d="m7.5 15.5-1 1-1-1"></path>
+        </svg>
+        <span>견적서</span>
+    </a>
+    <a href="./design1-7-1-service1.html" class="menu-item menu-services">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6">
+        <path d="m5 8 6 6"></path>
+        <path d="m4 14 6-6 2-3"></path>
+        <path d="M2 5h12"></path>
+        <path d="M7 2h1"></path>
+        <path d="m22 22-5-10-5 10"></path>
+        <path d="M14 18h6"></path>
+        </svg>
+        <span>서비스</span>
+    </a>
+    </div>
+</div>
+
+<!-- Header -->
+<header class="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-border">
+<div class="container mx-auto px-4 py-3 flex items-center justify-between">
+    <a href="./design1-7-2.html">
+    <div class="flex items-center gap-2">
+        <img src="./img/kicat_logo_hig_res_bg-removebg.png" alt="한국통번역주식회사" class="h-9 w-auto">
+    </div>
+    </a>
+    <nav class="hidden md:flex items-center space-x-8">
+    <a href="./design1-7-2-about.html" class="text-base font-medium text-gray-800 hover:text-primary hover:border-primary transition-all px-2 py-1">
+        회사소개
+    </a>
+    <div class="relative group">
+        <a href="./design1-7-2-interpretation-types.html" class="text-base font-medium border-primary px-2 py-1 flex items-center">
+        통역 서비스
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-1 h-4 w-4"><path d="m6 9 6 6 6-6"/></svg>
+        </a>
+        <div class="absolute left-0 mt-1 w-48 bg-white shadow-lg rounded-sm border border-gray-100 hidden group-hover:block z-50">
+        <a href="./design1-7-2-interpretation.html#types" class="text-primary block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary">통역 종류</a>
+        <a href="./design1-7-2-interpretation.html#process" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary">진행 절차</a>
+        <a href="./design1-7-2-interpretation.html#rates" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary">통역 요율</a>
+        <a href="./design1-7-2-interpretation-rentals.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary">장비 대여</a>
+        </div>
+    </div>
+    <a href="./design1-7-2-translation.html" class="text-base font-medium text-gray-800 hover:text-primary hover:border-primary transition-all px-2 py-1">
+        번역 서비스
+    </a>
+    <a href="./design1-7-2-other-services.html" class="text-base font-medium text-gray-800 hover:text-primary hover:border-primary transition-all px-2 py-1">
+        기타 서비스
+    </a>
+    <a href="./design1-7-2-cases.html" class="text-base font-medium text-gray-800 hover:text-primary hover:border-primary transition-all px-2 py-1">
+        성공 사례
+    </a>
+    </nav>
+
+    <div class="flex items-center gap-4">
+    <!-- Language Switcher -->
+    <div class="relative hidden md:block">
+        <button id="language-dropdown-button" class="flex items-center gap-1 text-sm font-medium px-3 py-2 hover:bg-gray-100">
+        <i data-lucide="globe" class="h-4 w-4"></i>
+        <span class="hidden sm:inline-block" id="current-language">한국어</span>
+        </button>
+        <div id="language-dropdown" class="dropdown-content">
+        <a href="#" class="language-option block px-2 py-1.5 text-sm hover:bg-gray-100 cursor-pointer" data-lang="ko">한국어</a>
+        <a href="#" class="language-option block px-2 py-1.5 text-sm hover:bg-gray-100 cursor-pointer" data-lang="en">English</a>
+        <a href="#" class="language-option block px-2 py-1.5 text-sm hover:bg-gray-100 cursor-pointer" data-lang="ja">日本語</a>
+        <a href="#" class="language-option block px-2 py-1.5 text-sm hover:bg-gray-100 cursor-pointer" data-lang="zh">中文</a>
+        <a href="#" class="language-option block px-2 py-1.5 text-sm hover:bg-gray-100 cursor-pointer" data-lang="es">Español</a>
+        </div>
+    </div>
+    
+    <button class="hidden md:flex items-center justify-center whitespace-nowrap text-sm font-medium bg-primary text-white hover:bg-primaryDark h-10 px-4 py-2 quote-request-btn transition-colors">
+        견적 요청하기
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="arrow-right" class="lucide lucide-arrow-right ml-2 h-4 w-4"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+    </button>
+    
+    <button class="md:hidden inline-flex items-center justify-center whitespace-nowrap text-sm font-medium border border-gray-200 bg-white text-gray-900 hover:bg-gray-100 h-10 w-10" id="mobile-menu-toggle">
+        <span class="sr-only">메뉴 열기</span>
+        <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="h-6 w-6"
+        >
+        <line x1="4" x2="20" y1="12" y2="12" />
+        <line x1="4" x2="20" y1="6" y2="6" />
+        <line x1="4" x2="20" y1="18" y2="18" />
+        </svg>
+    </button>
+    </div>
+</div>
+</header>
+
+<!-- Mobile Menu Dropdown -->
+<div id="mobile-menu" class="fixed inset-0 bg-black/50 z-50">
+    <div class="bg-white w-4/5 max-w-sm h-full overflow-y-auto shadow-xl">
+    <div class="p-4 border-b flex items-center justify-between">
+        <a href="./design1-7-2.html">
+        <div class="flex items-center gap-2">
+            <img src="./img/kicat_logo_hig_res_bg-removebg.png" alt="한국통번역주식회사" class="h-8 w-auto">
+        </div>
+        </a>
+        <button id="close-mobile-menu" class="text-gray-500 hover:text-gray-700">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+        </button>
+    </div>
+    
+    <nav class="p-4">
+        <ul class="space-y-4">
+        <li>
+            <a href="./design1-7-2-about.html" class="block py-2 text-gray-700 hover:text-primary border-b border-gray-100">
+            회사소개
+            </a>
+        </li>
+        <li>
+            <a href="./design1-7-2-interpretation.html" class="block py-2 text-gray-700 hover:text-primary border-b border-gray-100">
+            통역 서비스
+            </a>
+        </li>
+        <li>
+            <a href="./design1-7-2-translation.html" class="block py-2 text-gray-700 hover:text-primary border-b border-gray-100">
+            번역 서비스
+            </a>
+        </li>
+        <li>
+            <a href="./design1-7-2-other-services.html" class="block py-2 text-gray-700 hover:text-primary border-b border-gray-100">
+            기타 서비스
+            </a>
+        </li>
+        <li>
+            <a href="./design1-7-2-cases.html" class="block py-2 text-gray-700 hover:text-primary border-b border-gray-100">
+            성공 사례
+            </a>
+        </li>
+        </ul>
+        
+        <div class="mt-6">
+        <button class="w-full inline-flex items-center justify-center whitespace-nowrap text-sm font-medium bg-primary text-white hover:bg-primaryDark h-10 px-4 py-2 transition-colors quote-request-btn">
+            견적 요청하기
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-2 h-4 w-4">
+            <path d="M3 5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+            <path d="M17 8h-10"></path>
+            <path d="M17 12h-10"></path>
+            <path d="M17 16h-6"></path>
+            <path d="m7.5 15.5-1 1-1-1"></path>
+            </svg>
+        </button>
+        </div>
+        
+        <div class="mt-6">
+        <p class="text-sm font-medium text-gray-700 mb-2">언어 선택</p>
+        <div class="space-y-2">
+            <a href="#" class="language-option block px-3 py-2 text-sm hover:bg-gray-100 border rounded" data-lang="ko">한국어</a>
+            <a href="#" class="language-option block px-3 py-2 text-sm hover:bg-gray-100 border rounded" data-lang="en">English</a>
+            <a href="#" class="language-option block px-3 py-2 text-sm hover:bg-gray-100 border rounded" data-lang="ja">日本語</a>
+            <a href="#" class="language-option block px-3 py-2 text-sm hover:bg-gray-100 border rounded" data-lang="zh">中文</a>
+            <a href="#" class="language-option block px-3 py-2 text-sm hover:bg-gray-100 border rounded" data-lang="es">Español</a>
+        </div>
+        </div>
+    </nav>
+    </div>
+</div>
+
+<main>
+    <!-- Hero Section (Simplified) -->
+    <section class="py-16 md:py-24 bg-gradient-to-r from-primary/5 to-gray-50">
+    <div class="container mx-auto px-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center mt-8">
+        <!-- Image (appears first on mobile) -->
+        <div class="relative h-[350px] md:h-[650px] overflow-hidden shadow-xl group order-first md:order-last">
+            <div class="absolute inset-0 border-l-4 border-accent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"></div>
+            <img
+            src="./img/header-4.png"
+            alt="비즈니스 미팅을 위한 전문 번역 서비스"
+            class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+            />
+        </div>
+        
+        <!-- Text content (appears after image on mobile) -->
+        <div class="order-last md:order-first text-center md:text-left">
+            <div class="inline-flex items-center border px-2.5 py-0.5 text-xs font-semibold bg-secondary text-white mb-6 md:mb-4 mx-auto md:mx-0">
+            90% 이상 재의뢰
+            </div>
+            <h1 class="text-4xl md:text-5xl font-bold tracking-tight mb-3 md:mb-6 text-gray-900">
+            <span class="text-primary">고품질의 전문성을 갖춘</span>
+            </h1>
+            <h1 class="text-4xl md:text-5xl font-bold tracking-tight mb-8 md:mb-6 text-gray-900">
+            <span class="">피트너가 되겠습니다</span>
+            </h1>
+            <p class="hidden md:block text-lg text-gray-600 mb-8 leading-relaxed">
+            정부기관 통번역사가 설립한 에이전시로 풍부한 경험으로 서비스를 제공합니다.
+            </p>
+
+            <!-- Key Benefits - Reduced to 3 most important -->
+            <div class="hidden md:flex flex-wrap gap-2 sm:gap-3 mb-10 md:mb-8 overflow-x-auto justify-center md:justify-start px-2 -mx-2">
+            <div class="flex items-center gap-1 bg-accent/20 px-2 sm:px-3 py-1.5 rounded inline-flex flex-shrink-0 text-center w-auto">
+                <i data-lucide="clock" class="h-3.5 w-3.5 text-primary flex-shrink-0"></i>
+                <span class="text-xs font-medium line-clamp-1">행정사법 제23조에 의거하여 비밀엄수 준수</span>
+            </div>
+            <div class="flex items-center gap-1 bg-accent/20 px-2 sm:px-3 py-1.5 rounded inline-flex flex-shrink-0 text-center">
+                <i data-lucide="shield-check" class="h-3.5 w-3.5 text-primary flex-shrink-0"></i>
+                <span class="text-xs font-medium">당일견적 및 배정</span>
+            </div>
+            <div class="flex items-center gap-1 bg-accent/20 px-2 sm:px-3 py-1.5 rounded inline-flex flex-shrink-0 text-center">
+                <i data-lucide="users" class="h-3.5 w-3.5 text-primary flex-shrink-0"></i>
+                <span class="text-xs font-medium">전문감수 실시</span>
+            </div>
+            </div>
+            <!-- Mobile version -->
+            <div class="flex flex-wrap gap-2 sm:gap-3 mb-10 md:mb-8 overflow-x-auto justify-center md:justify-start px-2 -mx-2 md:hidden">
+            <div class="flex items-center gap-1 bg-accent/20 px-2 sm:px-3 py-1.5 rounded inline-flex flex-shrink-0 text-center w-auto">
+                <i data-lucide="clock" class="h-3.5 w-3.5 text-primary flex-shrink-0"></i>
+                <span class="text-xs font-medium line-clamp-1">행정사법 제23조에 의거하여 비밀엄수 준수</span>
+            </div>
+            <div class="inline">
+                <div class="flex items-center gap-1 bg-accent/20 px-2 sm:px-3 py-1.5 rounded inline-flex flex-shrink-0 text-center">
+                <i data-lucide="shield-check" class="h-3.5 w-3.5 text-primary flex-shrink-0"></i>
+                <span class="text-xs font-medium">당일견적 및 배정</span>
+                </div>
+                <div class="flex items-center gap-1 bg-accent/20 px-2 sm:px-3 py-1.5 rounded inline-flex flex-shrink-0 text-center">
+                <i data-lucide="users" class="h-3.5 w-3.5 text-primary flex-shrink-0"></i>
+                <span class="text-xs font-medium">전문감수 실시</span>
+                </div>
+            </div>
+            </div>
+            <div class="flex flex-col sm:flex-row gap-4">
+            <button class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium bg-primary text-white hover:bg-primaryDark h-11 px-8 py-2 transition-colors quote-request-btn">
+                견적 요청하기
+                <i data-lucide="arrow-right" class="ml-2 h-4 w-4"></i>
+            </button>
+            <a href="./design1-7-1-service1.html" class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium border-2 border-accent bg-transparent text-gray-900 hover:bg-accent/10 h-11 px-8 py-2 transition-colors">
+                서비스 알아보기
+            </a>
+            </div>
+        </div>
+        </div>
+    </div>
+    </section>
+
+
+    <!-- Trust & Credibility Block -->
+    <section class="py-10 bg-white">
+    <div class="container mx-auto px-4">
+        <div class="text-center mb-8">
+        <h2 class="text-xl font-medium text-gray-700">
+            많은 기업들이 <span class="text-primary font-semibold">한국통번역주식회사</span>를 선택하고 있습니다
+        </h2>
+        </div>
+
+        <div class="flex flex-wrap justify-center gap-x-6 gap-y-8 sm:gap-8 md:gap-10">
+        <div class="w-[120px] h-[80px] sm:w-[150px] sm:h-[90px] md:w-[180px] md:h-[100px] relative opacity-70 hover:grayscale-0 hover:opacity-100 transition-all duration-300 p-2 rounded-lg bg-white">
+            <img src="./img/partners1/ministry_of_culture_physical_tour" alt="고객사 1" class="absolute inset-0 w-full h-full object-contain p-2" />
+        </div>
+        <div class="w-[120px] h-[80px] sm:w-[150px] sm:h-[90px] md:w-[180px] md:h-[100px] relative opacity-70 hover:grayscale-0 hover:opacity-100 transition-all duration-300 p-2 rounded-lg bg-white">
+            <img src="./img/partners1/ebs.jpg" alt="고객사 2" class="absolute inset-0 w-full h-full object-contain p-2" />
+        </div>
+        <div class="w-[120px] h-[80px] sm:w-[150px] sm:h-[90px] md:w-[180px] md:h-[100px] relative opacity-70 hover:grayscale-0 hover:opacity-100 transition-all duration-300 p-2 rounded-lg bg-white">
+            <img src="./img/partners1/kdi.jpg" alt="고객사 3" class="absolute inset-0 w-full h-full object-contain p-2" />
+        </div>
+        <div class="w-[120px] h-[80px] sm:w-[150px] sm:h-[90px] md:w-[180px] md:h-[100px] relative opacity-70 hover:grayscale-0 hover:opacity-100 transition-all duration-300 p-2 rounded-lg bg-white">
+            <img src="./img/partners1/hyundai.jpg" alt="고객사 4" class="absolute inset-0 w-full h-full object-contain p-2" />
+        </div>
+        <div class="w-[120px] h-[80px] sm:w-[150px] sm:h-[90px] md:w-[180px] md:h-[100px] relative opacity-70 hover:grayscale-0 hover:opacity-100 transition-all duration-300 p-2 rounded-lg bg-white">
+            <img src="./img/partners1/lotte_gallery.jpg" alt="고객사 5" class="absolute inset-0 w-full h-full object-contain p-2" />
+        </div>
+        </div>
+        
+        <div class="text-center mt-8">
+        <button id="partnersModalBtn" class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium bg-primary text-white hover:bg-primaryDark h-11 px-8 py-2 transition-colors">
+            더 많은 고객사 보기
+            <i data-lucide="arrow-right" class="ml-2 h-4 w-4"></i>
+        </button>
+        </div>
+        <!-- Partners Modal script moved to the main script section at the bottom of the page -->
+    </div>
+    </section>
+
+
+    <!-- Service Overview Section -->
+    <section class="py-16 bg-white">
+    <div class="container mx-auto px-4">
+        <div class="text-center mb-8">
+        <div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold bg-secondary text-white mb-2">서비스</div>
+        <h3 class="text-3xl font-bold">
+            <span class="text-primary">전문</span> 통/번역 솔루션
+        </h3>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="border p-6 hover:shadow-md transition-all">
+            <div class="flex items-center mb-3">
+            <i data-lucide="file-text" class="h-6 w-6 text-primary mr-2"></i>
+            <h3 class="text-xl font-bold">전문 통역 서비스</h3>
+            </div>
+            <p class="text-gray-600 mb-4">
+            동시 통역, 순차 통역, 수행 통역, 화상 통역, 위스퍼링 통역 등 다양한 전문 통역 서비스 제공
+            </p>
+            <a href="./design1-7-2-interpretation.html" class="text-primary font-medium hover:underline flex items-center">
+            자세히 보기 <i data-lucide="arrow-right" class="ml-1 h-4 w-4"></i>
+            </a>
+        </div>
+
+        <div class="border p-6 hover:shadow-md transition-all">
+            <div class="flex items-center mb-3">
+            <i data-lucide="globe" class="h-6 w-6 text-primary mr-2"></i>
+            <h3 class="text-xl font-bold">문서 번역 서비스</h3>
+            </div>
+            <p class="text-gray-600 mb-4">
+            비즈니스 문서군, 마케팅 문서군, 기술 문서군, 국제표준 문서군, 글로벌·로컬라이징 문서군
+            </p>
+            <a href="./design1-7-2-translation.html" class="text-primary font-medium hover:underline flex items-center">
+            자세히 보기 <i data-lucide="arrow-right" class="ml-1 h-4 w-4"></i>
+            </a>
+        </div>
+
+        <div class="border p-6 hover:shadow-md transition-all">
+            <div class="flex items-center mb-3">
+            <i data-lucide="credit-card" class="h-6 w-6 text-primary mr-2"></i>
+            <h3 class="text-xl font-bold">PointPlus 시스템</h3>
+            </div>
+            <p class="text-gray-600 mb-4">시간을 절약하는 선결제 포인트 서비스입니다. 계정에 미리 포인트를 충전하면 번역 요청 시마다 자동으로 차감됩니다. 매번 견적을 받고, 계약을 체결하고, 결제하는 반복 작업을 줄일 수 있습니다.</p>
+            <a href="./design1-7-2-other-services.html" class="text-primary font-medium hover:underline flex items-center">
+            자세히 보기 <i data-lucide="arrow-right" class="ml-1 h-4 w-4"></i>
+            </a>
+        </div>
+        </div>
+
+        <!-- <div class="mt-10 text-center">
+        <div class="flex flex-row sm:flex-row justify-center gap-4">
+            <a href="./design1-7-2-translation.html" class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium bg-primary text-white hover:bg-primaryDark h-10 px-6 py-2 transition-colors">
+            번역 서비스 더보기
+            <i data-lucide="arrow-right" class="ml-2 h-4 w-4"></i>
+            </a>
+            <a href="./design1-7-2-interpretation.html" class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium bg-secondary text-white hover:bg-secondary/80 h-10 px-6 py-2 transition-colors">
+            통역 서비스 더보기
+            <i data-lucide="arrow-right" class="ml-2 h-4 w-4"></i>
+            </a>
+        </div>
+        </div> -->
+    </div>
+    </section>
+
+    <!-- Success Stories / Case Studies -->
+    <section id="case-studies" class="py-16 bg-gradient-to-b from-muted/30 to-white">
+    <div class="container mx-auto px-4">
+    <!-- Testimonials -->
+    <div class="bg-gradient-to-b from-muted/30 to-white">
+        <div class="text-center mb-8">
+        <div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold bg-secondary text-white mb-2">고객 후기</div>
+        <h3 class="text-3xl font-bold">
+            고객이 <span class="text-primary">직접</span> 말하는 서비스 품질
+        </h3>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 relative z-10">
+            
+            <!-- Case Study Card 1: 문화체육관광부 -->
+        <div class="overflow-hidden border-none shadow-lg hover:shadow-xl transition-all duration-300 group rounded-lg bg-white">
+            <div class="relative h-40">
+            <img
+                src="./img/partners1/ministry_of_culture_physical_tour"
+                alt="문화체육관광부 국제회의 통역"
+                class="absolute inset-0 w-2/3 h-2/3 object-cover object-center mx-auto left-0 right-0 top-0 bottom-0 my-auto group-hover:scale-105 transition-transform duration-500"
+            />
+            <div class="absolute top-2 left-2 bg-primary text-white text-xs py-1 px-3 rounded-full font-medium">
+                정부/중앙부처
+            </div>
+            </div>
+
+            <div class="p-6 pb-0">
+            <h3 class="text-xl font-bold leading-tight">문화체육관광부 국제회의 장·차관 동시/순차통역</h3>
+            </div>
+
+            <div class="p-6 space-y-4">
+            <!-- Key Metrics Row -->
+            <div class="grid grid-cols-2 gap-2 my-4">
+                <div class="flex flex-col items-center p-2 bg-primary/5 rounded-lg border border-primary/10">
+                <i data-lucide="star" class="h-5 w-5 text-secondary"></i>
+                <span class="text-xl font-bold text-primary mt-1">5점</span>
+                <span class="text-xs text-center text-mutedForeground">만족도</span>
+                </div>
+                <div class="flex flex-col items-center p-2 bg-primary/5 rounded-lg border border-primary/10">
+                <i data-lucide="refresh-cw" class="h-5 w-5 text-secondary"></i>
+                <span class="text-xl font-bold text-primary mt-1">100%</span>
+                <span class="text-xs text-center text-mutedForeground">재의뢰</span>
+                </div>
+                <div class="flex flex-col items-center p-2 bg-primary/5 rounded-lg border border-primary/10">
+                <i data-lucide="check-circle" class="h-5 w-5 text-secondary"></i>
+                <span class="text-xl font-bold text-primary mt-1">100%</span>
+                <span class="text-xs text-center text-mutedForeground">기한 준수</span>
+                </div>
+                <div class="flex flex-col items-center p-2 bg-primary/5 rounded-lg border border-primary/10">
+                <i data-lucide="award" class="h-5 w-5 text-secondary"></i>
+                <span class="text-xl font-bold text-primary mt-1">다수</span>
+                <span class="text-xs text-center text-mutedForeground">연계 의뢰</span>
+                </div>
+            </div>
+
+            <div class="space-y-3 pt-2">
+                <div>
+                <h4 class="text-sm font-medium text-primary flex items-center gap-1">
+                    <span class="inline-block w-1.5 h-1.5 bg-secondary rounded-full"></span> 과제
+                </h4>
+                <p class="text-sm">한국 측 발제 발표, 국가 간 면담, 및 성명서 발표에 대한 통역</p>
+                </div>
+
+                <div>
+                <h4 class="text-sm font-medium text-primary flex items-center gap-1">
+                    <span class="inline-block w-1.5 h-1.5 bg-secondary rounded-full"></span> 방법론
+                </h4>
+                <p class="text-sm">자동화된 매칭 툴을 통해 회의 주제에 대한 전문성을 보유하고, 정부기관 의전 및 통역 경력을 보유한 통역사 배정</p>
+                </div>
+
+                <div>
+                <h4 class="text-sm font-medium text-primary flex items-center gap-1">
+                    <span class="inline-block w-1.5 h-1.5 bg-secondary rounded-full"></span> 결과
+                </h4>
+                <p class="text-sm font-medium">
+                    <span>매끄러운 회의 진행으로 <span class="text-secondary font-bold">차기 통역 건에 대한 재의뢰</span> 및 타사업 번역 의뢰</span>
+                </p>
+                </div>
+            </div>
+            </div>
+        </div>
+
+        <!-- Case Study Card 2: KDI -->
+        <div class="overflow-hidden border-none shadow-lg hover:shadow-xl transition-all duration-300 group rounded-lg bg-white">
+            <div class="relative h-40">
+            <img
+                src="./img/partners1/kdi.jpg"
+                alt="KDI KSP 영문보고서 감수 및 현지어 번역"
+                class="absolute inset-0 w-2/3 h-2/3 object-cover object-center mx-auto left-0 right-0 top-0 bottom-0 my-auto group-hover:scale-105 transition-transform duration-500"
+            />
+            <div class="absolute top-2 left-2 bg-primary text-white text-xs py-1 px-3 rounded-full font-medium">
+                공공기관
+            </div>
+            </div>
+
+            <div class="p-6 pb-0">
+            <h3 class="text-xl font-bold leading-tight">KDI KSP 영문보고서 감수 및 현지어 번역</h3>
+            </div>
+
+            <div class="p-6 space-y-4">
+            <!-- Key Metrics Row -->
+            <div class="grid grid-cols-2 gap-2 my-4">
+                <div class="flex flex-col items-center p-2 bg-primary/5 rounded-lg border border-primary/10">
+                <i data-lucide="check-circle" class="h-5 w-5 text-secondary"></i>
+                <span class="text-xl font-bold text-primary mt-1">100%</span>
+                <span class="text-xs text-center text-mutedForeground">기한준수</span>
+                </div>
+                <div class="flex flex-col items-center p-2 bg-primary/5 rounded-lg border border-primary/10">
+                <i data-lucide="trending-up" class="h-5 w-5 text-secondary"></i>
+                <span class="text-xl font-bold text-primary mt-1">0.5%</span>
+                <span class="text-xs text-center text-mutedForeground">재번역율</span>
+                </div>
+                <div class="flex flex-col items-center p-2 bg-primary/5 rounded-lg border border-primary/10">
+                <i data-lucide="globe" class="h-5 w-5 text-secondary"></i>
+                <span class="text-xl font-bold text-primary mt-1">9개국</span>
+                <span class="text-xs text-center text-mutedForeground">언어 진행</span>
+                </div>
+                <div class="flex flex-col items-center p-2 bg-primary/5 rounded-lg border border-primary/10">
+                <i data-lucide="clock" class="h-5 w-5 text-secondary"></i>
+                <span class="text-xl font-bold text-primary mt-1">20%</span>
+                <span class="text-xs text-center text-mutedForeground">시간 단축</span>
+                </div>
+            </div>
+
+            <div class="space-y-3 pt-2">
+                <div>
+                <h4 class="text-sm font-medium text-primary flex items-center gap-1">
+                    <span class="inline-block w-1.5 h-1.5 bg-secondary rounded-full"></span> 과제
+                </h4>
+                <p class="text-sm">전문 보고서의 영문감수 및 출판용 포맷팅</p>
+                </div>
+
+                <div>
+                <h4 class="text-sm font-medium text-primary flex items-center gap-1">
+                    <span class="inline-block w-1.5 h-1.5 bg-secondary rounded-full"></span> 방법론
+                </h4>
+                <p class="text-sm">감수와 재번역을 동시에 진행하고, 수년 동안 누적된 KSP보고서 검토에 따른 노하우를 바탕으로 구축된 효율적인 프로세스 활용</p>
+                </div>
+
+                <div>
+                <h4 class="text-sm font-medium text-primary flex items-center gap-1">
+                    <span class="inline-block w-1.5 h-1.5 bg-secondary rounded-full"></span> 결과
+                </h4>
+                <p class="text-sm font-medium">
+                    <span>기한 내 편집을 포함한 감수 완료, <span class="text-secondary font-bold">시간 단축</span> 및 타언어 번역 수요 증가</span>
+                </p>
+                </div>
+            </div>
+            </div>
+        </div>
+
+        <!-- Case Study Card 3: 현대자동차 -->
+        <div class="overflow-hidden border-none shadow-lg hover:shadow-xl transition-all duration-300 group rounded-lg bg-white">
+            <div class="relative h-40">
+            <img
+                src="./img/partners1/hyundai.jpg"
+                alt="현대자동차 산학과제 결과물 보고서"
+                class="absolute inset-0 w-2/3 h-2/3 object-cover object-center mx-auto left-0 right-0 top-0 bottom-0 my-auto group-hover:scale-105 transition-transform duration-500"
+            />
+            <div class="absolute top-2 left-2 bg-primary text-white text-xs py-1 px-3 rounded-full font-medium">
+                대기업
+            </div>
+            </div>
+
+            <div class="p-6 pb-0">
+            <h3 class="text-xl font-bold leading-tight">현대자동차 산학과제 결과물 보고서 영문 감수</h3>
+            </div>
+
+            <div class="p-6 space-y-4">
+            <!-- Key Metrics Row -->
+            <div class="grid grid-cols-2 gap-2 my-4">
+                <div class="flex flex-col items-center p-2 bg-primary/5 rounded-lg border border-primary/10">
+                <i data-lucide="check-circle" class="h-5 w-5 text-secondary"></i>
+                <span class="text-xl font-bold text-primary mt-1">100%</span>
+                <span class="text-xs text-center text-mutedForeground">기한 준수</span>
+                </div>
+                <div class="flex flex-col items-center p-2 bg-primary/5 rounded-lg border border-primary/10">
+                <i data-lucide="trending-up" class="h-5 w-5 text-secondary"></i>
+                <span class="text-xl font-bold text-primary mt-1">90%</span>
+                <span class="text-xs text-center text-mutedForeground">일관성</span>
+                </div>
+                <div class="flex flex-col items-center p-2 bg-primary/5 rounded-lg border border-primary/10">
+                <i data-lucide="star" class="h-5 w-5 text-secondary"></i>
+                <span class="text-xl font-bold text-primary mt-1">5점</span>
+                <span class="text-xs text-center text-mutedForeground">만족도</span>
+                </div>
+                <div class="flex flex-col items-center p-2 bg-primary/5 rounded-lg border border-primary/10">
+                <i data-lucide="award" class="h-5 w-5 text-secondary"></i>
+                <span class="text-xl font-bold text-primary mt-1">A+</span>
+                <span class="text-xs text-center text-mutedForeground">품질 등급</span>
+                </div>
+            </div>
+
+            <div class="space-y-3 pt-2">
+                <div>
+                <h4 class="text-sm font-medium text-primary flex items-center gap-1">
+                    <span class="inline-block w-1.5 h-1.5 bg-secondary rounded-full"></span> 과제
+                </h4>
+                <p class="text-sm">산학과제 결과물 보고서에 대한 영문 감수 및 디자인 작업</p>
+                </div>
+
+                <div>
+                <h4 class="text-sm font-medium text-primary flex items-center gap-1">
+                    <span class="inline-block w-1.5 h-1.5 bg-secondary rounded-full"></span> 방법론
+                </h4>
+                <p class="text-sm">해당분야 통/번역 경력을 다수 보유한 번역사를 배정하고, 사전 브리핑을 통해 핵심 용어 및 쟁점을 전달하고, 디자인 팀과 협력한 워크플로우 구축</p>
+                </div>
+
+                <div>
+                <h4 class="text-sm font-medium text-primary flex items-center gap-1">
+                    <span class="inline-block w-1.5 h-1.5 bg-secondary rounded-full"></span> 결과
+                </h4>
+                <p class="text-sm font-medium">
+                    <span>보고서의 <span class="text-secondary font-bold">퀄리티 향상</span>, 사내 디자인과 통일된 편집물 제공</span>
+                </p>
+                </div>
+            </div>
+            </div>
+        </div>
+        <!-- View More Cases Button -->
+        <div class="col-span-1 md:col-span-3 flex justify-center mt-6">
+            <a href="./design1-7-2-cases.html" class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium bg-primary text-white hover:bg-primaryDark h-10 px-6 py-2 transition-colors">
+            <span>더 많은 사례 보기</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right">
+                <path d="M5 12h14"></path>
+                <path d="m12 5 7 7-7 7"></path>
+            </svg>
+            </a>
+        </div>
+        </div>
+        </div>
+    </div>
+    </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-16 bg-primary text-white">
+    <div class="container mx-auto px-4 text-center">
+        <h2 class="text-3xl font-bold mb-6">글로벌 비즈니스의 성공, 한국통번역과 함께 시작하세요</h2>
+        <p class="text-lg mb-8 max-w-2xl mx-auto">
+        20개 이상의 언어로 전문적인 서비스를 제공합니다. 귀사의 품격을 높이는 첫걸음을 함께 시작하세요.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <button class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium bg-white text-primary hover:bg-gray-100 h-11 px-8 py-2 transition-colors quote-request-btn">
+            견적 요청하기
+            <i data-lucide="arrow-right" class="ml-2 h-4 w-4"></i>
+        </button>
+        <a href="mailto:contact@globaltrans.kr" class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium border-2 border-white bg-transparent text-white hover:bg-white/10 h-11 px-8 py-2 transition-colors">
+            문의하기
+        </a>
+        </div>
+    </div>
+    </section>
+</main>
+
+<!-- Quote Request Modal -->
+<div id="quoteRequestModal" class="fixed inset-0 z-50 flex items-center justify-center hidden">
+    <div class="absolute inset-0 bg-black/50 backdrop-blur-sm"></div>
+    <div class="relative w-full max-w-md mx-4 sm:mx-auto bg-white rounded-none shadow-xl p-3 sm:p-5 max-h-[94vh] overflow-y-auto">
+    <button id="closeQuoteModal" class="absolute top-3 right-3 text-secondary hover:text-primary">
+        <i data-lucide="x" class="h-4 w-4"></i>
+    </button>
+    <h2 class="text-xl font-bold mb-3">견적 요청하기</h2>
+    <p class="text-sm text-mutedForeground mb-3">
+        필요한 번역 서비스에 대한 정보를 입력해 주시면 맞춤형 견적을 작성하여 드리겠습니다.
+    </p>
+    
+    <form id="quoteRequestForm" class="space-y-3">
+        <div>
+        <label for="name" class="block text-xs font-medium mb-1">이름/회사명 <span class="text-primary">*</span></label>
+        <input type="text" id="name" name="name" class="w-full px-2 py-1.5 border border-gray-300 rounded-none focus:outline-none focus:ring-2 focus:ring-primary text-sm" required />
+        </div>
+        <div>
+        <label for="email" class="block text-xs font-medium mb-1">이메일 <span class="text-primary">*</span></label>
+        <input type="email" id="email" name="email" class="w-full px-2 py-1.5 border border-gray-300 rounded-none focus:outline-none focus:ring-2 focus:ring-primary text-sm" required />
+        </div>
+        <div>
+        <label for="service" class="block text-xs font-medium mb-1">서비스 유형 <span class="text-primary">*</span></label>
+        <select id="service" name="service" class="w-full px-2 py-1.5 border border-gray-300 rounded-none focus:outline-none focus:ring-2 focus:ring-primary text-sm">
+            <option value="">서비스를 선택하세요</option>
+            <option value="document">문서 번역</option>
+            <option value="website">웹사이트 현지화</option>
+            <option value="interpretation">통역 서비스</option>
+            <option value="proofreading">콘텐츠 교정</option>
+        </select>
+        </div>
+        <div>
+        <label for="message" class="block text-xs font-medium mb-1">메시지 <span class="text-primary">*</span></label>
+        <textarea id="message" name="message" rows="3" class="w-full px-2 py-1.5 border border-gray-300 rounded-none focus:outline-none focus:ring-2 focus:ring-primary text-sm" required></textarea>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div>
+            <label for="file" class="block text-xs font-medium mb-1">파일 첨부</label>
+        <div class="flex items-center justify-center w-full">
+            <label for="file" class="flex flex-col items-center justify-center w-full h-20 border-2 border-dashed border-gray-300 rounded-none cursor-pointer bg-muted hover:bg-muted/80 transition-all">
+                <div class="flex flex-col items-center justify-center p-2">
+                <i data-lucide="upload" class="h-6 w-6 text-mutedForeground mb-1"></i>
+                <p class="text-xs text-mutedForeground">파일 선택/드래그</p>
+                <p class="text-xs text-mutedForeground">최대 10MB</p>
+            </div>
+            <input id="file" name="file" type="file" class="hidden" />
+            </label>
+            </div>
+        </div>
+        <div>
+            <label for="driveLink" class="block text-xs font-medium mb-1">Google Drive 링크</label>
+            <div class="flex items-center w-full relative">
+            <input type="url" id="driveLink" name="driveLink" placeholder="https://drive.google.com/..." class="w-full px-2 py-1.5 pl-7 border border-gray-300 rounded-none focus:outline-none focus:ring-2 focus:ring-primary text-sm" />
+            <i data-lucide="link" class="h-3 w-3 text-mutedForeground absolute left-2"></i>
+            </div>
+            <p class="text-[10px] text-mutedForeground mt-1">대용량/다수 파일은 Google Drive 링크 이용</p>
+        </div>
+        </div>
+        
+        <div class="flex justify-center mt-2">
+        <button type="submit" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 h-9 px-4 py-2 w-full bg-primary hover:bg-primary/90 text-white shadow-md hover:shadow-lg transition-all">
+            견적 요청하기
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="arrow-right" class="lucide lucide-arrow-right ml-1 h-3 w-3"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+        </button>
+        </div>
+    </form>
+    </div>
+</div>
+<!-- Partners Modal -->
+<div id="partnersModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden">
+    <div class="bg-white p-6 max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+    <div class="flex justify-between items-center mb-6">
+        <h3 class="text-2xl font-bold">협력 파트너사</h3>
+        <button id="closePartnersModal" class="text-gray-500 hover:text-gray-700">
+        <i data-lucide="x" class="h-6 w-6"></i>
+        </button>
+    </div>
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
+        <div class="border p-4 h-[120px] flex items-center justify-center">
+        <img src="./img/partners1/ministry_of_culture_physical_tour" alt="문화체육관광부" class="max-h-full max-w-full object-contain" />
+        </div>
+        <div class="border p-4 h-[120px] flex items-center justify-center">
+        <img src="./img/partners1/ministry_science_tech.jpg" alt="과학기술정보통신부" class="max-h-full max-w-full object-contain" />
+        </div>
+        <div class="border p-4 h-[120px] flex items-center justify-center">
+        <img src="./img/partners1/ministry_of_admin_safety.jpg" alt="행정안전부" class="max-h-full max-w-full object-contain" />
+        </div>
+        <div class="border p-4 h-[120px] flex items-center justify-center">
+        <img src="./img/partners1/kdi.jpg" alt="KDI" class="max-h-full max-w-full object-contain" />
+        </div>
+        <div class="border p-4 h-[120px] flex items-center justify-center">
+        <img src="./img/partners1/kiast.jpg" alt="KAIST" class="max-h-full max-w-full object-contain" />
+        </div>
+        <div class="border p-4 h-[120px] flex items-center justify-center">
+        <img src="./img/partners1/ebs.jpg" alt="EBS" class="max-h-full max-w-full object-contain" />
+        </div>
+        <div class="border p-4 h-[120px] flex items-center justify-center">
+        <img src="./img/partners1/hyundai.jpg" alt="현대자동차" class="max-h-full max-w-full object-contain" />
+        </div>
+        <div class="border p-4 h-[120px] flex items-center justify-center">
+        <img src="./img/partners1/lg_daily_life_safety.jpg" alt="LG생활안전" class="max-h-full max-w-full object-contain" />
+        </div>
+        <div class="border p-4 h-[120px] flex items-center justify-center">
+        <img src="./img/partners1/doosan.jpg" alt="두산" class="max-h-full max-w-full object-contain" />
+        </div>
+        <div class="border p-4 h-[120px] flex items-center justify-center">
+        <img src="./img/partners1/loreal.jpg" alt="로레알" class="max-h-full max-w-full object-contain" />
+        </div>
+        <div class="border p-4 h-[120px] flex items-center justify-center">
+        <img src="./img/partners1/lotte_gallery.jpg" alt="롯데갤러리" class="max-h-full max-w-full object-contain" />
+        </div>
+        <div class="border p-4 h-[120px] flex items-center justify-center">
+        <img src="./img/partners1/mystic_story.jpg" alt="미스틱스토리" class="max-h-full max-w-full object-contain" />
+        </div>
+        <div class="border p-4 h-[120px] flex items-center justify-center">
+        <img src="./img/partners1/korea_export_import_bank.jpg" alt="한국수출입은행" class="max-h-full max-w-full object-contain" />
+        </div>
+        <div class="border p-4 h-[120px] flex items-center justify-center">
+        <img src="./img/partners1/korea_arts_management_center.jpg" alt="한국문화예술경영지원센터" class="max-h-full max-w-full object-contain" />
+        </div>
+        <div class="border p-4 h-[120px] flex items-center justify-center">
+        <img src="./img/partners1/korea_arts_culture_education_center.jpg" alt="한국문화예술교육진흥원" class="max-h-full max-w-full object-contain" />
+        </div>
+        <div class="border p-4 h-[120px] flex items-center justify-center">
+        <img src="./img/partners1/national_museum_of_contemporary_arts.jpeg" alt="국립현대미술관" class="max-h-full max-w-full object-contain" />
+        </div>
+        <div class="border p-4 h-[120px] flex items-center justify-center">
+        <img src="./img/partners1/krivet.jpg" alt="직업능력연구원" class="max-h-full max-w-full object-contain" />
+        </div>
+        <div class="border p-4 h-[120px] flex items-center justify-center">
+        <img src="./img/partners1/kds.jpg" alt="한국디자인진흥원" class="max-h-full max-w-full object-contain" />
+        </div>
+        <div class="border p-4 h-[120px] flex items-center justify-center">
+        <img src="./img/partners1/kotra_logo.jpg" alt="KOTRA" class="max-h-full max-w-full object-contain" />
+        </div>
+        <div class="border p-4 h-[120px] flex items-center justify-center">
+        <img src="./img/partners1/g-sih.jpg" alt="G-SIH" class="max-h-full max-w-full object-contain" />
+        </div>
+        <div class="border p-4 h-[120px] flex items-center justify-center">
+        <img src="./img/partners1/kofice.jpg" alt="한국국제문화교류진흥원" class="max-h-full max-w-full object-contain" />
+        </div>
+        <div class="border p-4 h-[120px] flex items-center justify-center">
+        <img src="./img/partners1/korea_craft_design_foundation.jpg" alt="한국공예디자인문화진흥원" class="max-h-full max-w-full object-contain" />
+        </div>
+        <div class="border p-4 h-[120px] flex items-center justify-center">
+        <img src="./img/partners1/seoul_design.jpg" alt="서울디자인재단" class="max-h-full max-w-full object-contain" />
+        </div>
+        <div class="border p-4 h-[120px] flex items-center justify-center">
+        <img src="./img/partners1/seoul_culture_foundation.jpg" alt="서울문화재단" class="max-h-full max-w-full object-contain" />
+        </div>
+        <div class="border p-4 h-[120px] flex items-center justify-center">
+        <img src="./img/partners1/seoul_city_art_center.jpg" alt="세종문화회관" class="max-h-full max-w-full object-contain" />
+        </div>
+        <div class="border p-4 h-[120px] flex items-center justify-center">
+        <img src="./img/partners1/goryo_jegang.jpg" alt="고려제강" class="max-h-full max-w-full object-contain" />
+        </div>
+        <div class="border p-4 h-[120px] flex items-center justify-center">
+        <img src="./img/partners1/daejon_culture_arts_center.jpg" alt="대전문화재단" class="max-h-full max-w-full object-contain" />
+        </div>
+        <div class="border p-4 h-[120px] flex items-center justify-center">
+        <img src="./img/partners1/cheongju_arts.jpg" alt="청주문화재단" class="max-h-full max-w-full object-contain" />
+        </div>
+        <div class="border p-4 h-[120px] flex items-center justify-center">
+        <img src="./img/partners1/ansan_arts_foundation.jpg" alt="안산문화재단" class="max-h-full max-w-full object-contain" />
+        </div>
+        <div class="border p-4 h-[120px] flex items-center justify-center">
+        <img src="./img/partners1/danwon_art_museum.jpg" alt="단원미술관" class="max-h-full max-w-full object-contain" />
+        </div>
+        <div class="border p-4 h-[120px] flex items-center justify-center">
+        <img src="./img/partners1/pief.jpg" alt="PIEF" class="max-h-full max-w-full object-contain" />
+        </div>
+        <div class="border p-4 h-[120px] flex items-center justify-center">
+        <img src="./img/partners1/gallery_yeh.jpeg" alt="예화랑" class="max-h-full max-w-full object-contain" />
+        </div>
+        <div class="border p-4 h-[120px] flex items-center justify-center">
+        <img src="./img/partners1/acc.jpg" alt="국립아시아문화전당" class="max-h-full max-w-full object-contain" />
+        </div>
+    </div>
+    </div>
+</div>
+
+<footer class="bg-muted py-8 md:py-12">
+    <div class="container mx-auto px-4">
+    <div class="flex flex-col md:flex-row justify-between">
+        <!-- Company Logo and Description -->
+        <div class="mb-8 md:mb-0 md:max-w-xs">
+        <div class="flex items-center gap-2 mb-4">
+            <img src="./img/kicat_logo_hig_res_bg-removebg.png" alt="한국통번역주식회사" class="h-9 w-auto">
+        </div>
+        <p class="text-sm text-muted-foreground mb-4">
+            <span class="font-medium">글로벌 파트너</span> - 정확하고 전문성을 갖춘, 신뢰할 수 있는 파트너가 되어 드리겠습니다.
+        </p>
+        
+        <!-- Family Site -->
+        <div class="mt-4">
+            <h3 class="font-medium text-base mb-2 border-b pb-2">자회사</h3>
+            <div>
+            <a href="./design1-7-2-korea_culture_arts_translation_agency.html" class="inline-block p-2 border rounded bg-white text-sm hover:bg-gray-50 transition-colors">
+                한국문화예술번역원
+            </a>
+            </div>
+        </div>
+        </div>
+
+        <!-- Company Information -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16">
+        <div class="space-y-3">
+            <h3 class="font-medium text-base mb-4 border-b pb-2">회사 정보</h3>
+            <ul class="space-y-3 text-sm">
+            <li class="flex items-center">
+                <i data-lucide="building" class="h-4 w-4 text-primary mr-2"></i>
+                <span class="text-muted-foreground">상호명:</span>
+                <span class="ml-2 font-medium">한국통번역주식회사</span>
+            </li>
+            <li class="flex items-center">
+                <i data-lucide="user" class="h-4 w-4 text-primary mr-2"></i>
+                <span class="text-muted-foreground">대표이사:</span>
+                <span class="ml-2 font-medium">홍길동</span>
+            </li>
+            <li class="flex items-center">
+                <i data-lucide="file-text" class="h-4 w-4 text-primary mr-2"></i>
+                <span class="text-muted-foreground">사업자등록번호:</span>
+                <span class="ml-2 font-medium">123-45-67890</span>
+            </li>
+            <li class="flex items-center">
+                <i data-lucide="shopping-cart" class="h-4 w-4 text-primary mr-2"></i>
+                <span class="text-muted-foreground">통신판매업:</span>
+                <span class="ml-2 font-medium">제2024-서울강남-1234호</span>
+            </li>
+            </ul>
+        </div>
+
+        <div class="space-y-3">
+            <h3 class="font-medium text-base mb-4 border-b pb-2">연락처 정보</h3>
+            <ul class="space-y-3 text-sm">
+            <li class="flex items-start">
+                <i data-lucide="map-pin" class="h-4 w-4 text-primary mr-2 mt-0.5"></i>
+                <span class="text-muted-foreground">주소:</span>
+                <span class="ml-2 font-medium">서울특별시 강남구 테헤란로 123, 5층</span>
+            </li>
+            <li class="flex items-center">
+                <i data-lucide="phone" class="h-4 w-4 text-primary mr-2"></i>
+                <span class="text-muted-foreground">대표전화:</span>
+                <span class="ml-2 font-medium">02-123-4567</span>
+            </li>
+            <li class="flex items-center">
+                <i data-lucide="printer" class="h-4 w-4 text-primary mr-2"></i>
+                <span class="text-muted-foreground">팩스:</span>
+                <span class="ml-2 font-medium">02-123-4568</span>
+            </li>
+            <li class="flex items-center">
+                <i data-lucide="mail" class="h-4 w-4 text-primary mr-2"></i>
+                <span class="text-muted-foreground">이메일:</span>
+                <a href="mailto:contact@globaltrans.kr" class="ml-2 font-medium hover:text-primary transition-colors">contact@globaltrans.kr</a>
+            </li>
+            <li class="flex items-center">
+                <i data-lucide="clock" class="h-4 w-4 text-primary mr-2"></i>
+                <span class="text-muted-foreground">업무시간:</span>
+                <span class="ml-2 font-medium">평일 09:00 - 18:00</span>
+            </li>
+            </ul>
+        </div>
+        </div>
+    </div>
+
+    <!-- Copyright and Additional Info -->
+    <div class="mt-8 pt-6 border-t">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-muted-foreground">
+        <div class="text-center md:text-left">
+            <p>© 2025 한국통번역주식회사. 모든 권리 보유.</p>
+        </div>
+        <div class="text-center md:text-right space-x-4">
+            <a href="#" class="hover:text-primary transition-colors">개인정보처리방침</a>
+            <span class="text-muted-foreground">|</span>
+            <a href="#" class="hover:text-primary transition-colors">이용약관</a>
+        </div>
+        </div>
+    </div>
+    </div>
+</footer>
+
+<!-- Lucide Icon initialization -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    // Lucide icon initialization
+    if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+    }
+    
+    // Mobile menu functionality
+    const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const closeMobileMenu = document.getElementById('close-mobile-menu');
+    
+    // Language switcher functionality - with mobile support
+    const languageDropdownButton = document.getElementById('language-dropdown-button');
+    const languageDropdown = document.getElementById('language-dropdown');
+    
+    if (languageDropdownButton) {
+        languageDropdownButton.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        // Check if the screen is mobile sized (less than 768px)
+        if (window.innerWidth < 768) {
+            // On mobile, show the mobile menu instead
+            if (mobileMenu) {
+            mobileMenu.classList.add('show');
+            document.body.classList.add('overflow-hidden');
+            }
+        } else {
+            // On desktop, toggle language dropdown
+            if (languageDropdown) {
+            languageDropdown.classList.toggle('show');
+            }
+        }
+        });
+    }
+    
+    // Close language dropdown when clicking outside
+    document.addEventListener('click', function(e) {
+        if (languageDropdown && languageDropdownButton) {
+        if (!languageDropdownButton.contains(e.target) && !languageDropdown.contains(e.target)) {
+            languageDropdown.classList.remove('show');
+        }
+        }
+    });
+    
+    // Handle language option selection
+    const languageOptions = document.querySelectorAll('.language-option');
+    if (languageOptions.length > 0) {
+        languageOptions.forEach(option => {
+        option.addEventListener('click', function(e) {
+            e.preventDefault();
+            const lang = this.getAttribute('data-lang');
+            const currentLanguage = document.getElementById('current-language');
+            if (currentLanguage) {
+            currentLanguage.textContent = this.textContent;
+            }
+            
+            // Here you would normally change the language of the site
+            console.log('Language changed to:', lang);
+            
+            // Close the dropdown
+            if (languageDropdown) {
+            languageDropdown.classList.remove('show');
+            }
+        });
+        });
+    }
+    
+    // Toggle mobile menu when hamburger button is clicked
+    if (mobileMenuToggle && mobileMenu) {
+        mobileMenuToggle.addEventListener('click', function() {
+        mobileMenu.classList.add('show');
+        document.body.classList.add('overflow-hidden'); // Prevent scrolling
+        });
+    }
+    
+    // Close mobile menu when the close button is clicked
+    if (closeMobileMenu && mobileMenu) {
+        closeMobileMenu.addEventListener('click', function() {
+        closeMenu();
+        });
+    }
+    
+    // Close mobile menu when clicking on the dark overlay (outside the menu)
+    if (mobileMenu) {
+        mobileMenu.addEventListener('click', function(e) {
+        if (e.target === mobileMenu) {
+            closeMenu();
+        }
+        });
+    }
+    
+    // Close mobile menu when a navigation link is clicked
+    if (mobileMenu) {
+        const mobileNavLinks = mobileMenu.querySelectorAll('a[href^="#"]');
+        mobileNavLinks.forEach(link => {
+        link.addEventListener('click', function() {
+            closeMenu();
+        });
+        });
+    }
+    
+    // Function to close the mobile menu with animation
+    function closeMenu() {
+        mobileMenu.classList.remove('show');
+        // Only remove overflow-hidden after animation completes
+        setTimeout(() => {
+        document.body.classList.remove('overflow-hidden');
+        }, 400); // Match this with the animation duration
+    }
+    
+    // Service tabs functionality
+    const tabTriggers = document.querySelectorAll('.tab-trigger');
+    
+    tabTriggers.forEach(trigger => {
+        trigger.addEventListener('click', function() {
+        // Deactivate all tabs
+        tabTriggers.forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+        
+        // Activate the clicked tab
+        this.classList.add('active');
+        const tabId = trigger.getAttribute('data-tab');
+        document.getElementById(tabId + '-tab').classList.add('active');
+        });
+    });
+    
+    // Language tabs functionality
+    const languageTabTriggers = document.querySelectorAll('.language-tab-trigger');
+    
+    languageTabTriggers.forEach(trigger => {
+        trigger.addEventListener('click', function() {
+        // Deactivate all language tabs
+        languageTabTriggers.forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.language-tab-content').forEach(content => content.classList.remove('active'));
+        
+        // Activate the clicked language tab
+        this.classList.add('active');
+        const tabId = trigger.getAttribute('data-tab');
+        document.getElementById(tabId + '-tab').classList.add('active');
+        });
+        });
+    
+    // Accordion functionality
+    const accordionTriggers = document.querySelectorAll('.accordion-trigger');
+    
+    accordionTriggers.forEach(trigger => {
+        trigger.addEventListener('click', function() {
+        // Toggle chevron icon
+        const chevron = this.querySelector('.chevron');
+        chevron.style.transform = chevron.style.transform === 'rotate(180deg)' ? 'rotate(0deg)' : 'rotate(180deg)';
+        
+        // Toggle content visibility
+        const content = this.nextElementSibling;
+        content.style.display = content.style.display === 'block' ? 'none' : 'block';
+        });
+    });
+    
+    // Mobile bottom menu functionality
+    const mobileMenuItems = document.querySelectorAll('.mobile-bottom-menu .menu-item');
+    const regularMenuItems = Array.from(mobileMenuItems).filter(item => !item.classList.contains('quote-request-link'));
+    
+    // Remove default active state from all menu items
+    mobileMenuItems.forEach(item => {
+        if (!item.classList.contains('quote-request-link')) {
+        item.classList.remove('active');
+        }
+    });
+    
+    // Add click event listeners to regular menu items
+    regularMenuItems.forEach(item => {
+        item.addEventListener('click', function() {
+        if (!this.classList.contains('quote-request-link')) {
+            // Remove active class from all menu items
+            mobileMenuItems.forEach(menuItem => menuItem.classList.remove('active'));
+            // Add active class to the clicked menu item
+            this.classList.add('active');
+        }
+        });
+    });
+    
+    // Handle quote request button in mobile menu and other places
+    // Select all quote request buttons and links
+    const quoteRequestBtns = document.querySelectorAll('.quote-request-btn, .quote-request-link');
+    const quoteRequestModal = document.getElementById('quoteRequestModal');
+    const closeQuoteModalBtn = document.getElementById('closeQuoteModal');
+    
+    // Function to open the quote modal
+    function openQuoteModal(e) {
+        e.preventDefault();
+        if (quoteRequestModal) {
+        quoteRequestModal.classList.remove('hidden');
+        quoteRequestModal.classList.add('fade-in');
+        document.body.classList.add('overflow-hidden');
+        }
+    }
+    
+    // Function to close the quote modal
+    function closeQuoteModal() {
+        if (quoteRequestModal) {
+        quoteRequestModal.classList.remove('fade-in');
+        quoteRequestModal.classList.add('fade-out');
+        document.body.classList.remove('overflow-hidden');
+        
+        setTimeout(() => {
+        quoteRequestModal.classList.add('hidden');
+        quoteRequestModal.classList.remove('fade-out');
+        }, 300);
+        }
+    }
+    
+    // Add click event listeners to all quote request buttons and links
+    if (quoteRequestBtns.length > 0) {
+        quoteRequestBtns.forEach(btn => {
+        btn.addEventListener('click', openQuoteModal);
+        });
+    }
+    
+    // Add click event listener to close button
+    if (closeQuoteModalBtn) {
+        closeQuoteModalBtn.addEventListener('click', closeQuoteModal);
+    }
+    
+    // Close modal when clicking outside the modal content
+    if (quoteRequestModal) {
+    quoteRequestModal.addEventListener('click', function(e) {
+        if (e.target === quoteRequestModal) {
+        closeQuoteModal();
+        }
+    });
+    }
+    
+    // Close modal when pressing Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && quoteRequestModal && !quoteRequestModal.classList.contains('hidden')) {
+        closeQuoteModal();
+        }
+    });
+    
+    // Partners Modal functionality
+    const partnersModalBtn = document.getElementById('partnersModalBtn');
+    const partnersModal = document.getElementById('partnersModal');
+    const closePartnersModal = document.getElementById('closePartnersModal');
+    
+    // Function to open the partners modal
+    function openPartnersModal(e) {
+        e.preventDefault();
+        if (partnersModal) {
+        partnersModal.classList.remove('hidden');
+        document.body.classList.add('overflow-hidden');
+        }
+    }
+    
+    // Function to close the partners modal
+    function closePartnersModalFunc() {
+        if (partnersModal) {
+        partnersModal.classList.add('hidden');
+        document.body.classList.remove('overflow-hidden');
+        }
+    }
+    
+    // Add click event listener to partners modal button
+    if (partnersModalBtn) {
+        partnersModalBtn.addEventListener('click', openPartnersModal);
+    }
+    
+    // Add click event listener to close button
+    if (closePartnersModal) {
+        closePartnersModal.addEventListener('click', closePartnersModalFunc);
+    }
+    
+    // Close modal when clicking outside the modal content
+    if (partnersModal) {
+        partnersModal.addEventListener('click', function(e) {
+        if (e.target === partnersModal) {
+            closePartnersModalFunc();
+        }
+        });
+    }
+    
+    // Close modal when pressing Escape key (update existing handler)
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+        if (quoteRequestModal && !quoteRequestModal.classList.contains('hidden')) {
+            closeQuoteModal();
+        }
+        if (partnersModal && !partnersModal.classList.contains('hidden')) {
+            closePartnersModalFunc();
+        }
+        }
+    });
+    
+    // Track active menu items based on scroll position
+    const sections = {
+        services: document.getElementById('services'),
+        languages: document.getElementById('languages'),
+        pricing: document.getElementById('pricing'),
+        'case-studies': document.getElementById('case-studies'), 
+        faq: document.getElementById('faq'),
+        contact: document.getElementById('contact')
+    };
+    
+    window.addEventListener('scroll', function() {
+        // Get the current scroll position (add some offset to avoid triggering right at the top)
+        const scrollPosition = window.scrollY + 100; // Small offset for better detection
+        
+        // First remove active class from all menu items
+        mobileMenuItems.forEach(item => {
+        if (!item.classList.contains('quote-request-link')) {
+            item.classList.remove('active');
+        }
+        });
+        
+        // Find which section is currently in view
+        let foundActiveSection = false;
+        for (const [id, section] of Object.entries(sections)) {
+        if (section) {
+            const sectionTop = section.offsetTop;
+            const sectionBottom = sectionTop + section.offsetHeight;
+            
+            // Check if we're currently in this section
+            if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
+            foundActiveSection = true;
+            
+            // Update active menu item for this section
+            mobileMenuItems.forEach(item => {
+                const href = item.getAttribute('href');
+                if (href === `#${id}`) {
+                item.classList.add('active');
+                }
+            });
+            break;
+            }
+        }
+        }
+        
+        // If no section is active, ensure all menu items are inactive
+        if (!foundActiveSection) {
+        mobileMenuItems.forEach(item => {
+            if (!item.classList.contains('quote-request-link')) {
+            item.classList.remove('active');
+        }
+        });
+    }
+    });
+    
+    // Add resize event listener to handle screen size changes
+    window.addEventListener('resize', function() {
+        // If window is resized to desktop size and mobile menu is open, close it
+        if (window.innerWidth >= 768 && mobileMenu && mobileMenu.classList.contains('show')) {
+        closeMenu();
+        }
+        
+        // If window is resized to mobile and language dropdown is open, close it
+        if (window.innerWidth < 768 && languageDropdown && languageDropdown.classList.contains('show')) {
+        languageDropdown.classList.remove('show');
+        }
+    });
+    
+    // Trigger scroll handler on page load to set initial active state
+    window.dispatchEvent(new Event('scroll'));
+    });
+</script>
+
+<script>
+    // Modal functionality for carousel images
+    document.addEventListener('DOMContentLoaded', function() {
+    // ... existing image modal code ...
+    });
+</script>
+
+<script>
+    // Custom scrolling with padding adjustment
+    document.addEventListener('DOMContentLoaded', function() {
+    // Function to scroll to element with offset
+    function scrollToElement(elementId, offset = 30) {
+        const element = document.getElementById(elementId);
+        if (!element) return;
+        
+        const elementPosition = element.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - offset;
+        
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: 'smooth'
+            });
+            }
+    
+    // Update the service button click handler
+    const serviceButtons = document.querySelectorAll('button[onclick*="#services"]');
+    serviceButtons.forEach(button => {
+        button.setAttribute('onclick', '');
+        button.addEventListener('click', function() {
+        scrollToElement('services');
+        });
+    });
+    
+    // Update menu items with hash links
+    document.querySelectorAll('.menu-item[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href').substring(1);
+        scrollToElement(targetId);
+        });
+    });
+    });
+</script>
+
+<script>
+    // Section fade-in animation
+    document.addEventListener('DOMContentLoaded', function() {
+    // Add fade-in-section class to all sections
+    const sections = document.querySelectorAll('section');
+    sections.forEach(section => {
+        if (!section.classList.contains('fade-in-section')) {
+        section.classList.add('fade-in-section');
+        }
+    });
+    
+    // Function to check if element is in viewport
+    function checkIfInView() {
+        const sections = document.querySelectorAll('.fade-in-section');
+        sections.forEach(section => {
+        // Get section's position relative to the viewport
+        const rect = section.getBoundingClientRect();
+        const windowHeight = window.innerHeight || document.documentElement.clientHeight;
+        
+        // Check if section is in view (partial visibility is enough)
+        const isInView = (
+            rect.top <= windowHeight * 0.75 && // Section has entered 75% from the top
+            rect.bottom >= 0 // Bottom of section is not above the viewport
+        );
+        
+        if (isInView) {
+            section.classList.add('is-visible');
+        }
+        });
+    }
+    
+    // Run on initial load
+    checkIfInView();
+    
+    // Run on scroll
+    window.addEventListener('scroll', checkIfInView, { passive: true });
+    
+    // Run on resize
+    window.addEventListener('resize', checkIfInView, { passive: true });
+    });
+</script>
+</body>
+</html>
+

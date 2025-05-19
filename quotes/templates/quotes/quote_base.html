@@ -1,0 +1,1429 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <title>글로벌번역 - 전문 번역 서비스</title>
+        <meta name="description" content="빠르고 신뢰할 수 있는 전문 번역 서비스. 50개 이상의 언어로 비즈니스 성공을 위한 번역 솔루션을 제공합니다.">
+
+        <!-- Tailwind CSS via CDN -->
+        <script src="https://cdn.tailwindcss.com"></script>
+
+        <!-- Google Fonts - Inter -->
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+        <!-- Lucide Icons via CDN -->
+        <script src="https://unpkg.com/lucide@latest"></script>
+
+        <!-- Custom Tailwind Configuration -->
+        <script>
+            tailwind.config = {
+            theme: {
+                extend: {
+                colors: {
+                    primary: 'rgb(113 6 0)', // Red color from design1-5-sharp.html
+                    primaryDark: '#af0a00', // Darker version of primary
+                    secondary: '#d09101', // Black from design1-5-sharp.html
+                    secondaryDark: '#af0a00', // Darker version of secondary
+                    accent: '#71060026', // Keeping the bright accent color
+                    accentDark: '#b9e005', // Darker version of accent
+                    muted: '#F0F4F9', // Light background
+                    mutedForeground: '#64748B', // Text color for descriptions
+                },
+                fontFamily: {
+                    sans: ['Inter', 'sans-serif'],
+                },
+                borderRadius: {
+                    'none': '0',
+                    'sm': '0px',
+                    DEFAULT: '0px',
+                    'md': '0px',
+                    'lg': '0px',
+                    'xl': '0px',
+                    'full': '0px',
+                },
+                },
+            },
+            };
+        </script>
+
+        <style>
+            /* Custom styles */
+            .tab-content {
+            display: none;
+            }
+            
+            .tab-content.active {
+            display: block;
+            }
+            
+            .tab-trigger.active {
+            background-color: white;
+            color: rgb(155 8 0);
+            }
+            
+            .language-tab-content {
+            display: none;
+            }
+            
+            .language-tab-content.active {
+            display: block;
+            }
+            
+            .language-tab-trigger.active {
+            background-color: white;
+            color: rgb(155 8 0);
+            }
+            
+            .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            }
+            
+            .accordion-item.active .accordion-content {
+            max-height: 500px;
+            }
+            
+            .accordion-trigger .chevron {
+            transition: transform 0.3s;
+            }
+            
+            .accordion-item.active .accordion-trigger .chevron {
+            transform: rotate(180deg);
+            }
+            
+            .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            min-width: 120px;
+            background-color: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 0px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            z-index: 50;
+            }
+            
+            .dropdown-content.show {
+            display: block;
+            }
+            
+            /* Carousel Styles */
+            .carousel-container {
+            width: 100%;
+            overflow: hidden;
+            padding: 0 2rem; /* Add padding to give space for arrows on mobile */
+            }
+            
+            .carousel-inner {
+            display: flex;
+            width: 100%;
+            transition: transform 0.4s ease-in-out;
+            }
+            
+            .carousel-item {
+            flex: 0 0 100%;
+            width: 100%;
+            opacity: 0.9;
+            transition: opacity 0.3s ease;
+            }
+            
+            .carousel-indicator.active,
+            .carousel-indicator.bg-primary {
+            width: 8px;
+            transform: scale(1.2);
+            transition: all 0.3s ease;
+            border-radius: 0px;
+            }
+            
+            .carousel-prev,
+            .carousel-next {
+            opacity: 0.7;
+            transition: all 0.3s ease;
+            border-radius: 0px;
+            }
+            
+            .carousel-prev:hover,
+            .carousel-next:hover {
+            opacity: 1;
+            background-color: rgba(255, 255, 255, 0.9);
+            }
+            
+            /* Responsive fixes for carousel */
+            @media (max-width: 768px) {
+            .carousel-container {
+                padding: 0 1rem; /* Less padding on very small screens */
+            }
+            
+            .carousel-prev, 
+            .carousel-next {
+                padding: 0.5rem; /* Smaller buttons on mobile */
+                transform: scale(0.9);
+            }
+            
+            .carousel-prev {
+                left: 0.25rem; /* Closer to edge on mobile */
+            }
+            
+            .carousel-next {
+                right: 0.25rem; /* Closer to edge on mobile */
+            }
+            
+            .carousel-item img {
+                transition: transform 0.3s ease-in-out;
+            }
+            
+            .carousel-item:hover img {
+                transform: scale(1.02);
+            }
+            }
+            
+            @media (max-width: 480px) {
+            .carousel-indicators {
+                margin-top: 0.5rem;
+            }
+            
+            .carousel-indicator {
+                width: 6px;
+                height: 6px;
+            }
+            }
+            
+            /* Section Fade In Animation */
+            @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            }
+            
+            .fade-in-section {
+            opacity: 0;
+            transform: translateY(15px);
+            visibility: hidden;
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            will-change: opacity, visibility;
+            }
+            
+            .fade-in-section.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+            visibility: visible;
+            }
+            
+            /* Modal Animation */
+            @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+            }
+            
+            @keyframes zoomIn {
+            from { transform: scale(0.95); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+            }
+            
+            .animate-fade-in {
+            animation: fadeIn 0.3s ease-in-out forwards;
+            }
+            
+            #modalImage {
+            animation: zoomIn 0.3s ease-out forwards;
+            }
+            
+            /* Hover effect for carousel images */
+            .carousel-image-wrapper {
+            overflow: hidden;
+            position: relative;
+            }
+            
+            .carousel-image-wrapper::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 1;
+            }
+            
+            .carousel-image-wrapper::after {
+            content: '🔍';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.7);
+            color: white;
+            font-size: 24px;
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 2;
+            }
+            
+            .carousel-image-wrapper:hover::before {
+            opacity: 1;
+            }
+            
+            .carousel-image-wrapper:hover::after {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+            }
+            
+            /* Smooth scrolling for all hash links */
+            html {
+            scroll-behavior: smooth;
+            }
+            
+            /* Custom animation duration for smoother scrolling - optional refinement */
+            @media (prefers-reduced-motion: no-preference) {
+            html {
+                scroll-behavior: smooth;
+            }
+            }
+            
+            /* Make all elements sharp - override any rounded corners */
+            * {
+            border-radius: 0 !important;
+            }
+            
+            /* Buttons, input fields, cards should all be sharp */
+            button, input, select, textarea, .card, .shadow-md, .shadow-lg, 
+            .dropdown-content, .modal-content, img {
+            border-radius: 0 !important;
+            }
+            
+            /* Modal animations */
+            @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+            }
+            
+            @keyframes fadeOut {
+            from {
+                opacity: 1;
+            }
+            to {
+                opacity: 0;
+            }
+            }
+            
+            @keyframes scaleIn {
+            0% {
+                transform: scale(0.95);
+                opacity: 0;
+            }
+            70% {
+                transform: scale(1.02);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            }
+            
+            @keyframes scaleOut {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(0.95);
+                opacity: 0;
+            }
+            }
+            
+            #quoteRequestModal {
+            transition: opacity 0.3s ease;
+            }
+            
+            #quoteRequestModal.hidden {
+            display: none;
+            }
+            
+            #quoteRequestModal.fade-in {
+            animation: fadeIn 0.3s ease forwards;
+            }
+            
+            #quoteRequestModal.fade-out {
+            animation: fadeOut 0.3s ease forwards;
+            }
+            
+            #quoteRequestModal > div {
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            }
+            
+            #quoteRequestModal.fade-in > div {
+            animation: scaleIn 0.3s ease forwards;
+            }
+            
+            #quoteRequestModal.fade-out > div {
+            animation: scaleOut 0.3s ease forwards;
+            }
+            
+            /* Partners Modal Animation */
+            #partnersModal {
+            transition: opacity 0.3s ease;
+            }
+            
+            #partnersModal.hidden {
+            display: none;
+            }
+            
+            #partnersModal.fade-in {
+            animation: fadeIn 0.3s ease forwards;
+            }
+            
+            #partnersModal.fade-out {
+            animation: fadeOut 0.3s ease forwards;
+            }
+            
+            #partnersModal > div {
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            }
+            
+            #partnersModal.fade-in > div {
+            animation: scaleIn 0.3s ease forwards;
+            }
+            
+            #partnersModal.fade-out > div {
+            animation: scaleOut 0.3s ease forwards;
+            }
+            
+            /* Mobile Menu Animation Styles */
+            #mobile-menu {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            }
+
+            #mobile-menu.show {
+            opacity: 1;
+            visibility: visible;
+            }
+
+            #mobile-menu .bg-white {
+            transform: translateX(-100%);
+            transition: transform 0.4s ease;
+            }
+
+            #mobile-menu.show .bg-white {
+            transform: translateX(0);
+            }
+
+            /* Mobile Bottom Menu Styles */
+            .mobile-bottom-menu {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: white;
+            box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.08);
+            z-index: 40;
+            padding: 4px 16px;
+            display: none;
+            border-top: 1px solid #f0f0f0;
+            transform: translateY(100%);
+            animation: slideUp 0.3s forwards;
+            }
+
+            @keyframes slideUp {
+            to {
+                transform: translateY(0);
+            }
+            }
+
+            /* Make the mobile menu more app-like with a subtle rounded top */
+            @media (max-width: 768px) {
+            .mobile-bottom-menu {
+                display: block;
+                border-top-left-radius: 16px;
+                border-top-right-radius: 16px;
+                padding-bottom: env(safe-area-inset-bottom, 16px); /* Support for iPhone X+ */
+            }
+            
+            /* Add more space at the bottom for the menu */
+            body {
+                padding-bottom: 90px;
+            }
+            
+            /* Hide the desktop sticky menu */
+            .sticky-side-menu {
+                display: none;
+            }
+            }
+            
+            .mobile-bottom-menu .menu-items {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            padding: 0 4px;
+            }
+
+            .mobile-bottom-menu .menu-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #6b7280;
+            font-size: 0.75rem;
+            padding: 10px 8px;
+            position: relative;
+            transition: all 0.2s ease;
+            width: 25%;
+            border-radius: 10px;
+            margin: 0 2px;
+            }
+            
+            /* Add vertical separators between menu items */
+            .mobile-bottom-menu .menu-item:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            top: 25%;
+            right: 0;
+            height: 50%;
+            width: 1px;
+            background-color: #e5e7eb; /* Light gray separator */
+            }
+            
+            /* Make the active menu item more visible with a subtle background */
+            .mobile-bottom-menu .menu-item.active {
+            color: #374151; /* Darker gray for text */
+            background-color: #f3f4f6; /* Light gray background */
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            }
+            
+            .mobile-bottom-menu .menu-item.active svg {
+            color: rgb(113 6 0); /* Primary color only for the active icon */
+            }
+            
+            /* Active indicator at the bottom */
+            .mobile-bottom-menu .menu-item.active::before {
+            content: '';
+            position: absolute;
+            bottom: 2px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30%;
+            height: 3px;
+            border-radius: 3px;
+            background-color: rgb(113 6 0); /* Match primary color */
+            }
+            
+            /* Special styling for quote request but more subtle */
+            .mobile-bottom-menu .menu-item.quote-request-link {
+            color: #4b5563; /* Standard gray text */
+            }
+            
+            .mobile-bottom-menu .menu-item.quote-request-link svg {
+            color: rgb(113 6 0); /* Only the icon remains red */
+            }
+
+            .mobile-bottom-menu .menu-item svg {
+            margin-bottom: 4px;
+            transition: color 0.2s ease;
+            }
+
+            /* Create a slight bounce effect for the icons */
+            .mobile-bottom-menu .menu-item:hover svg {
+            animation: bounce 0.4s;
+            }
+            
+            /* Add a background highlight effect when pressed */
+            .mobile-bottom-menu .menu-item:active {
+            background-color: #e5e7eb;
+            transform: scale(0.97);
+            }
+
+            @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+            }
+
+            @media (max-width: 768px) {
+            .mobile-bottom-menu {
+                display: block;
+            }
+            
+            .sticky-side-menu {
+                display: none;
+            }
+            
+            /* Add padding to the bottom of the page to account for the mobile menu */
+            body {
+                padding-bottom: 80px; /* Increased padding for larger menu */
+            }
+            }
+
+            @media (max-width: 640px) {
+            #quoteRequestModal .relative {
+                max-height: 90vh;
+            }
+            }
+        </style>
+    </head>
+<body class="min-h-screen flex flex-col font-sans text-gray-900 bg-white break-keep">
+
+    <!-- Mobile Bottom Menu -->
+    <div class="mobile-bottom-menu">
+        <div class="menu-items">
+            <a href="tel:02-123-4567" class="menu-item">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+            </svg>
+            <span>견적 요청함</span>
+            </a>
+            <a href="https://pf.kakao.com/_dVjAxl" class="menu-item">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6">
+                <path d="M12 2C6.48 2 2 5.51 2 9.95c0 2.74 1.73 5.14 4.36 6.55-.22.85-.9 3.05-1.03 3.53-.16.6.2.85.65.62.34-.17 3.35-2.24 4.68-3.15.43.05.86.08 1.34.08 5.52 0 10-3.51 10-7.95S17.52 2 12 2z"></path>
+                <path d="M7.5 11.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"></path>
+                <path d="M12 11.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"></path>
+                <path d="M16.5 11.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"></path>
+            </svg>
+            <span>카톡</span>
+            </a>
+            
+            <a href="#" class="menu-item quote-request-link">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6">
+                <path d="M3 5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                <path d="M17 8h-10"></path>
+                <path d="M17 12h-10"></path>
+                <path d="M17 16h-6"></path>
+                <path d="m7.5 15.5-1 1-1-1"></path>
+            </svg>
+            <span>견적</span>
+            </a>
+            <a href="mailto:contact@globaltrans.kr" class="menu-item menu-services">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6">
+                <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+            </svg>
+            <span>이메일</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-border">
+    <div class="container mx-auto px-4 py-3 flex items-center justify-between">
+        <a href="./design1-7-2.html">
+        <div class="flex items-center gap-2">
+            <h1 class="text-2xl font-bold tracking-tight text-primary">Admin Tools</h1>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6 text-primary">
+                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+            </svg>
+        </div>
+        </div>
+        </a>
+    </div>
+    </header>
+
+    <!-- Mobile Menu Dropdown -->
+    <div id="mobile-menu" class="fixed inset-0 bg-black/50 z-50">
+        <div class="bg-white w-4/5 max-w-sm h-full overflow-y-auto shadow-xl">
+        <div class="p-4 border-b flex items-center justify-between">
+            <a href="./design1-7-2.html">
+            <div class="flex items-center gap-2">
+                <img src="{% static './img/kicat_logo_hig_res_bg-removebg.png' %}" alt="한국통번역주식회사" class="h-8 w-auto">
+            </div>
+            </a>
+            <button id="close-mobile-menu" class="text-gray-500 hover:text-gray-700">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+            </button>
+        </div>
+        
+        <nav class="p-4">
+            <ul class="space-y-4">
+            <li>
+                <a href="./design1-7-2-about.html" class="block py-2 text-gray-700 hover:text-primary border-b border-gray-100">
+                회사소개
+                </a>
+            </li>
+            <li>
+                <a href="./design1-7-2-interpretation.html" class="block py-2 text-gray-700 hover:text-primary border-b border-gray-100">
+                통역 서비스
+                </a>
+            </li>
+            <li>
+                <a href="./design1-7-2-translation.html" class="block py-2 text-gray-700 hover:text-primary border-b border-gray-100">
+                번역 서비스
+                </a>
+            </li>
+            <li>
+                <a href="./design1-7-2-other-services.html" class="block py-2 text-gray-700 hover:text-primary border-b border-gray-100">
+                기타 서비스
+                </a>
+            </li>
+            <li>
+                <a href="./design1-7-2-cases.html" class="block py-2 text-gray-700 hover:text-primary border-b border-gray-100">
+                성공 사례
+                </a>
+            </li>
+            </ul>
+            
+            <div class="mt-6">
+            <button class="w-full inline-flex items-center justify-center whitespace-nowrap text-sm font-medium bg-primary text-white hover:bg-primaryDark h-10 px-4 py-2 transition-colors quote-request-btn">
+                견적 요청하기
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-2 h-4 w-4">
+                <path d="M3 5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                <path d="M17 8h-10"></path>
+                <path d="M17 12h-10"></path>
+                <path d="M17 16h-6"></path>
+                <path d="m7.5 15.5-1 1-1-1"></path>
+                </svg>
+            </button>
+            </div>
+            
+            <div class="mt-6">
+            <p class="text-sm font-medium text-gray-700 mb-2">언어 선택</p>
+            <div class="space-y-2">
+                <a href="#" class="language-option block px-3 py-2 text-sm hover:bg-gray-100 border rounded" data-lang="ko">한국어</a>
+                <a href="#" class="language-option block px-3 py-2 text-sm hover:bg-gray-100 border rounded" data-lang="en">English</a>
+                <a href="#" class="language-option block px-3 py-2 text-sm hover:bg-gray-100 border rounded" data-lang="ja">日本語</a>
+                <a href="#" class="language-option block px-3 py-2 text-sm hover:bg-gray-100 border rounded" data-lang="zh">中文</a>
+                <a href="#" class="language-option block px-3 py-2 text-sm hover:bg-gray-100 border rounded" data-lang="es">Español</a>
+            </div>
+            </div>
+        </nav>
+        </div>
+    </div>
+
+    <main>
+        <div class="w-full mt-16 rounded-lg border shadow-sm bg-white border-slate-200 shadow-slate-950/5 max-w-[280px]">
+            <div class="w-full h-max rounded p-3">
+            <ul class="flex flex-col gap-0.5 min-w-60">
+                <li href="#" class="flex items-center py-1.5 px-2.5 rounded-md align-middle select-none font-sans transition-all duration-300 ease-in aria-disabled:opacity-50 aria-disabled:pointer-events-none bg-transparent text-slate-600 hover:text-slate-800 dark:hover:text-white hover:bg-slate-200 focus:bg-slate-200 focus:text-slate-800 dark:focus:text-white dark:data-[selected=true]:text-white dark:bg-opacity-70">
+                <span class="grid place-items-center shrink-0 me-2.5"><svg width="1.5em" height="1.5em" stroke-width="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" color="currentColor" class="h-[18px] w-[18px]"><path d="M7 9L12 12.5L17 9" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path><path d="M2 17V7C2 5.89543 2.89543 5 4 5H20C21.1046 5 22 5.89543 22 7V17C22 18.1046 21.1046 19 20 19H4C2.89543 19 2 18.1046 2 17Z" stroke="currentColor"></path></svg>
+                </span>견적 요청함
+                <span class="grid place-items-center shrink-0 ps-2.5 ms-auto">
+                    <div class="relative inline-flex w-max items-center border font-sans font-medium rounded-md text-xs p-0.5 bg-slate-800/10 border-transparent text-slate-800 shadow-none">
+                    <span class="font-sans text-current leading-none my-0.5 mx-1.5">14</span>
+                    </div>
+                </span>
+                </li>
+                <li href="#" class="flex items-center py-1.5 px-2.5 rounded-md align-middle select-none font-sans transition-all duration-300 ease-in aria-disabled:opacity-50 aria-disabled:pointer-events-none bg-transparent text-slate-600 hover:text-slate-800 dark:hover:text-white hover:bg-slate-200 focus:bg-slate-200 focus:text-slate-800 dark:focus:text-white dark:data-[selected=true]:text-white dark:bg-opacity-70">
+                <span class="grid place-items-center shrink-0 me-2.5"><svg width="1.5em" height="1.5em" viewBox="0 0 24 24" stroke-width="1.5" fill="none" xmlns="http://www.w3.org/2000/svg" color="currentColor" class="h-[18px] w-[18px]"><g clip-path="url(#clip0_2476_13290)"><path d="M22.1525 3.55321L11.1772 21.0044L9.50686 12.4078L2.00002 7.89795L22.1525 3.55321Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path><path d="M9.45557 12.4436L22.1524 3.55321" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path></g></svg>
+                </span>Sent</li>
+                <li href="#" class="flex items-center py-1.5 px-2.5 rounded-md align-middle select-none font-sans transition-all duration-300 ease-in aria-disabled:opacity-50 aria-disabled:pointer-events-none bg-transparent text-slate-600 hover:text-slate-800 dark:hover:text-white hover:bg-slate-200 focus:bg-slate-200 focus:text-slate-800 dark:focus:text-white dark:data-[selected=true]:text-white dark:bg-opacity-70">
+                <span class="grid place-items-center shrink-0 me-2.5"><svg width="1.5em" height="1.5em" viewBox="0 0 24 24" stroke-width="1.5" fill="none" xmlns="http://www.w3.org/2000/svg" color="currentColor" class="h-[18px] w-[18px]"><path d="M4 21.4V2.6C4 2.26863 4.26863 2 4.6 2H16.2515C16.4106 2 16.5632 2.06321 16.6757 2.17574L19.8243 5.32426C19.9368 5.43679 20 5.5894 20 5.74853V21.4C20 21.7314 19.7314 22 19.4 22H4.6C4.26863 22 4 21.7314 4 21.4Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path><path d="M16 2V5.4C16 5.73137 16.2686 6 16.6 6H20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                </span>Drafts</li>
+                <li href="#" class="flex items-center py-1.5 px-2.5 rounded-md align-middle select-none font-sans transition-all duration-300 ease-in aria-disabled:opacity-50 aria-disabled:pointer-events-none bg-transparent text-slate-600 hover:text-slate-800 dark:hover:text-white hover:bg-slate-200 focus:bg-slate-200 focus:text-slate-800 dark:focus:text-white dark:data-[selected=true]:text-white dark:bg-opacity-70">
+                <span class="grid place-items-center shrink-0 me-2.5"><svg width="1.5em" height="1.5em" viewBox="0 0 24 24" stroke-width="1.5" fill="none" xmlns="http://www.w3.org/2000/svg" color="currentColor" class="h-[18px] w-[18px]"><path d="M9.5 14.5L3 21" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path><path d="M5.00007 9.48528L14.1925 18.6777L15.8895 16.9806L15.4974 13.1944L21.0065 8.5211L15.1568 2.67141L10.4834 8.18034L6.69713 7.78823L5.00007 9.48528Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                </span>Pins</li>
+                <li href="#" class="flex items-center py-1.5 px-2.5 rounded-md align-middle select-none font-sans transition-all duration-300 ease-in aria-disabled:opacity-50 aria-disabled:pointer-events-none bg-transparent text-slate-600 hover:text-slate-800 dark:hover:text-white hover:bg-slate-200 focus:bg-slate-200 focus:text-slate-800 dark:focus:text-white dark:data-[selected=true]:text-white dark:bg-opacity-70">
+                <span class="grid place-items-center shrink-0 me-2.5"><svg width="1.5em" height="1.5em" stroke-width="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" color="currentColor" class="h-[18px] w-[18px]"><path d="M7 6L17 6" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path><path d="M7 9L17 9" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path><path d="M9 17H15" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path><path d="M3 12H2.6C2.26863 12 2 12.2686 2 12.6V21.4C2 21.7314 2.26863 22 2.6 22H21.4C21.7314 22 22 21.7314 22 21.4V12.6C22 12.2686 21.7314 12 21.4 12H21M3 12V2.6C3 2.26863 3.26863 2 3.6 2H20.4C20.7314 2 21 2.26863 21 2.6V12M3 12H21" stroke="currentColor"></path></svg>
+                </span>Archive</li>
+                <li href="#" class="flex items-center py-1.5 px-2.5 rounded-md align-middle select-none font-sans transition-all duration-300 ease-in aria-disabled:opacity-50 aria-disabled:pointer-events-none bg-transparent text-slate-600 hover:text-slate-800 dark:hover:text-white hover:bg-slate-200 focus:bg-slate-200 focus:text-slate-800 dark:focus:text-white dark:data-[selected=true]:text-white dark:bg-opacity-70">
+                <span class="grid place-items-center shrink-0 me-2.5"><svg width="1.5em" height="1.5em" stroke-width="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" color="currentColor" class="h-[18px] w-[18px]"><path d="M3.03919 4.2939C3.01449 4.10866 3.0791 3.92338 3.23133 3.81499C3.9272 3.31953 6.3142 2 12 2C17.6858 2 20.0728 3.31952 20.7687 3.81499C20.9209 3.92338 20.9855 4.10866 20.9608 4.2939L19.2616 17.0378C19.0968 18.2744 18.3644 19.3632 17.2813 19.9821L16.9614 20.1649C13.8871 21.9217 10.1129 21.9217 7.03861 20.1649L6.71873 19.9821C5.6356 19.3632 4.90325 18.2744 4.73838 17.0378L3.03919 4.2939Z" stroke="currentColor"></path><path d="M3 5C5.57143 7.66666 18.4286 7.66662 21 5" stroke="currentColor"></path></svg>
+                </span>Trash</li>
+                <hr class="-mx-3 my-3 border-slate-200" />
+                <li>
+                <div data-toggle="collapse" 
+                    data-target="#sidebarCollapseList" 
+                    aria-expanded="false" 
+                    aria-controls="sidebarCollapseList" 
+                    class="flex items-center justify-between min-w-60 cursor-pointer py-1.5 px-2.5 rounded-md align-middle transition-all duration-300 ease-in text-slate-600 hover:text-slate-800 dark:text-slate-300 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-slate-700 focus:bg-slate-200 dark:focus:bg-slate-700 focus:text-slate-800 dark:focus:text-white">
+                    <span class="flex items-center">
+                    <svg width="1.5em" height="1.5em" stroke-width="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" color="currentColor" class="h-4 w-4 me-3"><path d="M7 12.5C7.27614 12.5 7.5 12.2761 7.5 12C7.5 11.7239 7.27614 11.5 7 11.5C6.72386 11.5 6.5 11.7239 6.5 12C6.5 12.2761 6.72386 12.5 7 12.5Z" fill="currentColor" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path><path d="M12 12.5C12.2761 12.5 12.5 12.2761 12.5 12C12.5 11.7239 12.2761 11.5 12 11.5C11.7239 11.5 11.5 11.7239 11.5 12C11.5 12.2761 11.7239 12.5 12 12.5Z" fill="currentColor" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path><path d="M17 12.5C17.2761 12.5 17.5 12.2761 17.5 12C17.5 11.7239 17.2761 11.5 17 11.5C16.7239 11.5 16.5 11.7239 16.5 12C16.5 12.2761 16.7239 12.5 17 12.5Z" fill="currentColor" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path><path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                    More
+                    </span>
+                    
+                    <span data-icon class="grid place-items-center shrink-0 transition-transform duration-300 ease-in-out">
+                    <svg width="1.5em" height="1.5em" stroke-width="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" color="currentColor" class="h-4 w-4 stroke-[1.5] dark:stroke-slate-300">
+                        <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                    </span>    
+                </div>
+                <div class="overflow-hidden transition-[max-height] duration-300 ease-in-out max-h-0" id="sidebarCollapseList">
+                    <ul class="flex flex-col gap-0.5 min-w-60">
+                    <li class="pl-10 flex items-center cursor-pointer py-1.5 px-2.5 rounded-md align-middle select-none font-sans transition-all duration-300 ease-in bg-transparent text-slate-600 hover:text-slate-800 dark:text-slate-300 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-slate-700 focus:bg-slate-200 dark:focus:bg-slate-700 focus:text-slate-800 dark:focus:text-white">
+                        Inbox
+                    </li>
+                    <li class="pl-10 flex items-center cursor-pointer py-1.5 px-2.5 rounded-md align-middle select-none font-sans transition-all duration-300 ease-in bg-transparent text-slate-600 hover:text-slate-800 dark:text-slate-300 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-slate-700 focus:bg-slate-200 dark:focus:bg-slate-700 focus:text-slate-800 dark:focus:text-white">
+                        Trash
+                    </li>
+                    <li class="pl-10 flex items-center cursor-pointer py-1.5 px-2.5 rounded-md align-middle select-none font-sans transition-all duration-300 ease-in bg-transparent text-slate-600 hover:text-slate-800 dark:text-slate-300 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-slate-700 focus:bg-slate-200 dark:focus:bg-slate-700 focus:text-slate-800 dark:focus:text-white">
+                        Settings
+                    </li>
+                    </ul>   
+                </div>
+                </li>
+                <hr class="-mx-3 my-3 border-slate-200" />
+                <li class="flex items-center py-1.5 px-2.5 rounded-md align-middle select-none font-sans transition-all duration-300 ease-in aria-disabled:opacity-50 aria-disabled:pointer-events-none bg-transparent dark:hover:text-white dark:focus:text-white dark:data-[selected=true]:text-white dark:bg-opacity-70 text-red-500 hover:bg-red-500/10 hover:text-error focus:bg-error/10 focus:text-error">
+                <span class="grid place-items-center shrink-0 me-2.5"><svg width="1.5em" height="1.5em" stroke-width="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" color="currentColor" class="h-[18px] w-[18px]"><path d="M12 12H19M19 12L16 15M19 12L16 9" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path><path d="M19 6V5C19 3.89543 18.1046 3 17 3H7C5.89543 3 5 3.89543 5 5V19C5 20.1046 5.89543 21 7 21H17C18.1046 21 19 20.1046 19 19V18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                </span>Logout</li>
+            </ul>
+            </div>
+        </div>
+        {% block quote_content %}
+        {% endblock %}
+
+    </main>
+
+    <!-- Quote Request Modal -->
+    <div id="quoteRequestModal" class="fixed inset-0 z-50 flex items-center justify-center hidden">
+        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm"></div>
+        <div class="relative w-full max-w-md mx-4 sm:mx-auto bg-white rounded-none shadow-xl p-3 sm:p-5 max-h-[94vh] overflow-y-auto">
+        <button id="closeQuoteModal" class="absolute top-3 right-3 text-secondary hover:text-primary">
+            <i data-lucide="x" class="h-4 w-4"></i>
+        </button>
+        <h2 class="text-xl font-bold mb-3">견적 요청하기</h2>
+        <p class="text-sm text-mutedForeground mb-3">
+            필요한 번역 서비스에 대한 정보를 입력해 주시면 맞춤형 견적을 작성하여 드리겠습니다.
+        </p>
+        
+        <form id="quoteRequestForm" class="space-y-3">
+            <div>
+            <label for="name" class="block text-xs font-medium mb-1">이름 <span class="text-primary">*</span></label>
+            <input type="text" id="name" name="name" class="w-full px-2 py-1.5 border border-gray-300 rounded-none focus:outline-none focus:ring-2 focus:ring-primary text-sm" required />
+            </div>
+            <div>
+                <label for="company" class="block text-xs font-medium mb-1">회사명 <span class="text-primary">*</span></label>
+                <input type="text" id="company" name="company" class="w-full px-2 py-1.5 border border-gray-300 rounded-none focus:outline-none focus:ring-2 focus:ring-primary text-sm" required />
+                </div>
+            <div>
+            <label for="email" class="block text-xs font-medium mb-1">이메일 <span class="text-primary">*</span></label>
+            <input type="email" id="email" name="email" class="w-full px-2 py-1.5 border border-gray-300 rounded-none focus:outline-none focus:ring-2 focus:ring-primary text-sm" required />
+            </div>
+            <div>
+            <label for="service" class="block text-xs font-medium mb-1">서비스 유형 <span class="text-primary">*</span></label>  
+            <div class="flex justify-between mb-2">
+                <button type="button" class="tab-btn px-3 py-1.5 text-sm border border-gray-300 rounded-none hover:bg-primary hover:text-white flex-1 mx-1 transition-all duration-100 active" data-tab="interpretation">통역</button>
+                <button type="button" class="tab-btn px-3 py-1.5 text-sm border border-gray-300 rounded-none hover:bg-primary hover:text-white flex-1 mx-1 transition-all duration-100" data-tab="translation">번역</button>
+                <button type="button" class="tab-btn px-3 py-1.5 text-sm border border-gray-300 rounded-none hover:bg-primary hover:text-white flex-1 mx-1 transition-all duration-100" data-tab="other">기타</button>
+            </div>
+            <select id="interpretation" name="interpretation" class="tab-content w-full px-2 py-1.5 border border-gray-300 rounded-none focus:outline-none focus:ring-2 focus:ring-primary text-sm">
+                <option value="">서비스를 선택하세요</option>     
+                <option value="simultaneous">동시통역</option>
+                <option value="consecutive">순차통역</option>
+            </select>
+            <select id="translation" name="translation" class="tab-content w-full px-2 py-1.5 border border-gray-300 rounded-none focus:outline-none focus:ring-2 focus:ring-primary text-sm">
+                <option value="">서비스를 선택하세요</option>
+                <option value="document">문서 번역</option>
+                <option value="website">웹사이트 현지화</option>
+                <option value="proofreading">콘텐츠 교정</option>
+            </select>
+            <select id="other" name="other" class="tab-content w-full px-2 py-1.5 border border-gray-300 rounded-none focus:outline-none focus:ring-2 focus:ring-primary text-sm">
+                <option value="">서비스를 선택하세요</option>
+                <option value="consulting">번역 컨설팅</option>
+                <option value="training">번역 교육</option>
+            </select>
+            </div>
+            <div>
+            <label for="message" class="block text-xs font-medium mb-1">메시지 <span class="text-primary">*</span></label>
+            <textarea id="message" name="message" rows="3" class="w-full px-2 py-1.5 border border-gray-300 rounded-none focus:outline-none focus:ring-2 focus:ring-primary text-sm" required></textarea>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+                <label for="file" class="block text-xs font-medium mb-1">파일 첨부</label>
+            <div class="flex items-center justify-center w-full">
+                <label for="file" class="flex flex-col items-center justify-center w-full h-20 border-2 border-dashed border-gray-300 rounded-none cursor-pointer bg-muted hover:bg-muted/80 transition-all">
+                    <div class="flex flex-col items-center justify-center p-2">
+                    <i data-lucide="upload" class="h-6 w-6 text-mutedForeground mb-1"></i>
+                    <p class="text-xs text-mutedForeground">파일 선택/드래그</p>
+                    <p class="text-xs text-mutedForeground">최대 10MB</p>
+                </div>
+                <input id="file" name="file" type="file" class="hidden" />
+                </label>
+                </div>
+            </div>
+            <div>
+                <label for="driveLink" class="block text-xs font-medium mb-1">Google Drive 링크</label>
+                <div class="flex items-center w-full relative">
+                <input type="url" id="driveLink" name="driveLink" placeholder="https://drive.google.com/..." class="w-full px-2 py-1.5 pl-7 border border-gray-300 rounded-none focus:outline-none focus:ring-2 focus:ring-primary text-sm" />
+                <i data-lucide="link" class="h-3 w-3 text-mutedForeground absolute left-2"></i>
+                </div>
+                <p class="text-[10px] text-mutedForeground mt-1">대용량/다수 파일은 Google Drive 링크 이용</p>
+            </div>
+            </div>
+            
+            <div class="flex justify-center mt-2">
+            <button type="submit" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 h-9 px-4 py-2 w-full bg-primary hover:bg-primary/90 text-white shadow-md hover:shadow-lg transition-all">
+                견적 요청하기
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="arrow-right" class="lucide lucide-arrow-right ml-1 h-3 w-3"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+            </button>
+            </div>
+        </form>
+        </div>
+    </div>
+    <!-- Partners Modal -->
+    <div id="partnersModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden">
+        <div class="bg-white p-6 max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="text-2xl font-bold">협력 파트너사</h3>
+            <button id="closePartnersModal" class="text-gray-500 hover:text-gray-700">
+            <i data-lucide="x" class="h-6 w-6"></i>
+            </button>
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
+            <div class="border p-4 h-[120px] flex items-center justify-center">
+            <img src="{% static './img/partners/ministry_of_culture_physical_tour' %}" alt="문화체육관광부" class="max-h-full max-w-full object-contain" />
+            </div>
+            <div class="border p-4 h-[120px] flex items-center justify-center">
+            <img src="{% static './img/partners/ministry_science_tech.jpg' %}" alt="과학기술정보통신부" class="max-h-full max-w-full object-contain" />
+            </div>
+            <div class="border p-4 h-[120px] flex items-center justify-center">
+            <img src="{% static './img/partners/ministry_of_admin_safety.jpg' %}" alt="행정안전부" class="max-h-full max-w-full object-contain" />
+            </div>
+            <div class="border p-4 h-[120px] flex items-center justify-center">
+            <img src="{% static './img/partners/kdi.jpg' %}" alt="KDI" class="max-h-full max-w-full object-contain" />
+            </div>
+            <div class="border p-4 h-[120px] flex items-center justify-center">
+            <img src="{% static './img/partners/kiast.jpg' %}" alt="KAIST" class="max-h-full max-w-full object-contain" />
+            </div>
+            <div class="border p-4 h-[120px] flex items-center justify-center">
+            <img src="{% static './img/partners/ebs.jpg' %}" alt="EBS" class="max-h-full max-w-full object-contain" />
+            </div>
+            <div class="border p-4 h-[120px] flex items-center justify-center">
+            <img src="{% static './img/partners/hyundai.jpg' %}" alt="현대자동차" class="max-h-full max-w-full object-contain" />
+            </div>
+            <div class="border p-4 h-[120px] flex items-center justify-center">
+            <img src="{% static './img/partners/lg_daily_life_safety.jpg' %}" alt="LG생활안전" class="max-h-full max-w-full object-contain" />
+            </div>
+            <div class="border p-4 h-[120px] flex items-center justify-center">
+            <img src="{% static './img/partners/doosan.jpg' %}" alt="두산" class="max-h-full max-w-full object-contain" />
+            </div>
+            <div class="border p-4 h-[120px] flex items-center justify-center">
+            <img src="{% static './img/partners/loreal.jpg' %}" alt="로레알" class="max-h-full max-w-full object-contain" />
+            </div>
+            <div class="border p-4 h-[120px] flex items-center justify-center">
+            <img src="{% static './img/partners/lotte_gallery.jpg' %}" alt="롯데갤러리" class="max-h-full max-w-full object-contain" />
+            </div>
+            <div class="border p-4 h-[120px] flex items-center justify-center">
+            <img src="{% static './img/partners/mystic_story.jpg' %}" alt="미스틱스토리" class="max-h-full max-w-full object-contain" />
+            </div>
+            <div class="border p-4 h-[120px] flex items-center justify-center">
+            <img src="{% static './img/partners/korea_export_import_bank.jpg' %}" alt="한국수출입은행" class="max-h-full max-w-full object-contain" />
+            </div>
+            <div class="border p-4 h-[120px] flex items-center justify-center">
+            <img src="{% static './img/partners/korea_arts_management_center.jpg' %}" alt="한국문화예술경영지원센터" class="max-h-full max-w-full object-contain" />
+            </div>
+            <div class="border p-4 h-[120px] flex items-center justify-center">
+            <img src="{% static './img/partners/korea_arts_culture_education_center.jpg' %}" alt="한국문화예술교육진흥원" class="max-h-full max-w-full object-contain" />
+            </div>
+            <div class="border p-4 h-[120px] flex items-center justify-center">
+            <img src="{% static './img/partners/national_museum_of_contemporary_arts.jpeg' %}" alt="국립현대미술관" class="max-h-full max-w-full object-contain" />
+            </div>
+            <div class="border p-4 h-[120px] flex items-center justify-center">
+            <img src="{% static './img/partners/krivet.jpg' %}" alt="직업능력연구원" class="max-h-full max-w-full object-contain" />
+            </div>
+            <div class="border p-4 h-[120px] flex items-center justify-center">
+            <img src="{% static './img/partners/kds.jpg' %}" alt="한국디자인진흥원" class="max-h-full max-w-full object-contain" />
+            </div>
+            <div class="border p-4 h-[120px] flex items-center justify-center">
+            <img src="{% static './img/partners/kotra_logo.jpg' %}" alt="KOTRA" class="max-h-full max-w-full object-contain" />
+            </div>
+            <div class="border p-4 h-[120px] flex items-center justify-center">
+            <img src="{% static './img/partners/g-sih.jpg' %}" alt="G-SIH" class="max-h-full max-w-full object-contain" />
+            </div>
+            <div class="border p-4 h-[120px] flex items-center justify-center">
+            <img src="{% static './img/partners/kofice.jpg' %}" alt="한국국제문화교류진흥원" class="max-h-full max-w-full object-contain" />
+            </div>
+            <div class="border p-4 h-[120px] flex items-center justify-center">
+            <img src="{% static './img/partners/korea_craft_design_foundation.jpg' %}" alt="한국공예디자인문화진흥원" class="max-h-full max-w-full object-contain" />
+            </div>
+            <div class="border p-4 h-[120px] flex items-center justify-center">
+            <img src="{% static './img/partners/seoul_design.jpg' %}" alt="서울디자인재단" class="max-h-full max-w-full object-contain" />
+            </div>
+            <div class="border p-4 h-[120px] flex items-center justify-center">
+            <img src="{% static './img/partners/seoul_culture_foundation.jpg' %}" alt="서울문화재단" class="max-h-full max-w-full object-contain" />
+            </div>
+            <div class="border p-4 h-[120px] flex items-center justify-center">
+            <img src="{% static './img/partners/seoul_city_art_center.jpg' %}" alt="세종문화회관" class="max-h-full max-w-full object-contain" />
+            </div>
+            <div class="border p-4 h-[120px] flex items-center justify-center">
+            <img src="{% static './img/partners/goryo_jegang.jpg' %}" alt="고려제강" class="max-h-full max-w-full object-contain" />
+            </div>
+            <div class="border p-4 h-[120px] flex items-center justify-center">
+            <img src="{% static './img/partners/daejon_culture_arts_center.jpg' %}" alt="대전문화재단" class="max-h-full max-w-full object-contain" />
+            </div>
+            <div class="border p-4 h-[120px] flex items-center justify-center">
+            <img src="{% static './img/partners/cheongju_arts.jpg' %}" alt="청주문화재단" class="max-h-full max-w-full object-contain" />
+            </div>
+            <div class="border p-4 h-[120px] flex items-center justify-center">
+            <img src="{% static './img/partners/ansan_arts_foundation.jpg' %}" alt="안산문화재단" class="max-h-full max-w-full object-contain" />
+            </div>
+            <div class="border p-4 h-[120px] flex items-center justify-center">
+            <img src="{% static './img/partners/danwon_art_museum.jpg' %}" alt="단원미술관" class="max-h-full max-w-full object-contain" />
+            </div>
+            <div class="border p-4 h-[120px] flex items-center justify-center">
+            <img src="{% static './img/partners/pief.jpg' %}" alt="PIEF" class="max-h-full max-w-full object-contain" />
+            </div>
+            <div class="border p-4 h-[120px] flex items-center justify-center">
+            <img src="{% static './img/partners/gallery_yeh.jpeg' %}" alt="예화랑" class="max-h-full max-w-full object-contain" />
+            </div>
+            <div class="border p-4 h-[120px] flex items-center justify-center">
+            <img src="{% static './img/partners/acc.jpg' %}" alt="국립아시아문화전당" class="max-h-full max-w-full object-contain" />
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <!-- Lucide Icon initialization -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+        // Lucide icon initialization
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
+        
+        // Mobile menu functionality
+        const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const closeMobileMenu = document.getElementById('close-mobile-menu');
+        
+        // Language switcher functionality - with mobile support
+        const languageDropdownButton = document.getElementById('language-dropdown-button');
+        const languageDropdown = document.getElementById('language-dropdown');
+        
+        if (languageDropdownButton) {
+            languageDropdownButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Check if the screen is mobile sized (less than 768px)
+            if (window.innerWidth < 768) {
+                // On mobile, show the mobile menu instead
+                if (mobileMenu) {
+                mobileMenu.classList.add('show');
+                document.body.classList.add('overflow-hidden');
+                }
+            } else {
+                // On desktop, toggle language dropdown
+                if (languageDropdown) {
+                languageDropdown.classList.toggle('show');
+                }
+            }
+            });
+        }
+        
+        // Close language dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+            if (languageDropdown && languageDropdownButton) {
+            if (!languageDropdownButton.contains(e.target) && !languageDropdown.contains(e.target)) {
+                languageDropdown.classList.remove('show');
+            }
+            }
+        });
+        
+        // Handle language option selection
+        const languageOptions = document.querySelectorAll('.language-option');
+        if (languageOptions.length > 0) {
+            languageOptions.forEach(option => {
+            option.addEventListener('click', function(e) {
+                e.preventDefault();
+                const lang = this.getAttribute('data-lang');
+                const currentLanguage = document.getElementById('current-language');
+                if (currentLanguage) {
+                currentLanguage.textContent = this.textContent;
+                }
+                
+                // Here you would normally change the language of the site
+                console.log('Language changed to:', lang);
+                
+                // Close the dropdown
+                if (languageDropdown) {
+                languageDropdown.classList.remove('show');
+                }
+            });
+            });
+        }
+        
+        // Toggle mobile menu when hamburger button is clicked
+        if (mobileMenuToggle && mobileMenu) {
+            mobileMenuToggle.addEventListener('click', function() {
+            mobileMenu.classList.add('show');
+            document.body.classList.add('overflow-hidden'); // Prevent scrolling
+            });
+        }
+        
+        // Close mobile menu when the close button is clicked
+        if (closeMobileMenu && mobileMenu) {
+            closeMobileMenu.addEventListener('click', function() {
+            closeMenu();
+            });
+        }
+        
+        // Close mobile menu when clicking on the dark overlay (outside the menu)
+        if (mobileMenu) {
+            mobileMenu.addEventListener('click', function(e) {
+            if (e.target === mobileMenu) {
+                closeMenu();
+            }
+            });
+        }
+        
+        // Close mobile menu when a navigation link is clicked
+        if (mobileMenu) {
+            const mobileNavLinks = mobileMenu.querySelectorAll('a[href^="#"]');
+            mobileNavLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                closeMenu();
+            });
+            });
+        }
+        
+        // Function to close the mobile menu with animation
+        function closeMenu() {
+            mobileMenu.classList.remove('show');
+            // Only remove overflow-hidden after animation completes
+            setTimeout(() => {
+            document.body.classList.remove('overflow-hidden');
+            }, 400); // Match this with the animation duration
+        }
+        
+        // Service tabs functionality
+        const tabTriggers = document.querySelectorAll('.tab-trigger');
+        
+        tabTriggers.forEach(trigger => {
+            trigger.addEventListener('click', function() {
+            // Deactivate all tabs
+            tabTriggers.forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            // Activate the clicked tab
+            this.classList.add('active');
+            const tabId = trigger.getAttribute('data-tab');
+            document.getElementById(tabId + '-tab').classList.add('active');
+            });
+        });
+        
+        // Language tabs functionality
+        const languageTabTriggers = document.querySelectorAll('.language-tab-trigger');
+        
+        languageTabTriggers.forEach(trigger => {
+            trigger.addEventListener('click', function() {
+            // Deactivate all language tabs
+            languageTabTriggers.forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.language-tab-content').forEach(content => content.classList.remove('active'));
+            
+            // Activate the clicked language tab
+            this.classList.add('active');
+            const tabId = trigger.getAttribute('data-tab');
+            document.getElementById(tabId + '-tab').classList.add('active');
+            });
+            });
+        
+        // Accordion functionality
+        const accordionTriggers = document.querySelectorAll('.accordion-trigger');
+        
+        accordionTriggers.forEach(trigger => {
+            trigger.addEventListener('click', function() {
+            // Toggle chevron icon
+            const chevron = this.querySelector('.chevron');
+            chevron.style.transform = chevron.style.transform === 'rotate(180deg)' ? 'rotate(0deg)' : 'rotate(180deg)';
+            
+            // Toggle content visibility
+            const content = this.nextElementSibling;
+            content.style.display = content.style.display === 'block' ? 'none' : 'block';
+            });
+        });
+        
+        // Mobile bottom menu functionality
+        const mobileMenuItems = document.querySelectorAll('.mobile-bottom-menu .menu-item');
+        const regularMenuItems = Array.from(mobileMenuItems).filter(item => !item.classList.contains('quote-request-link'));
+        
+        // Remove default active state from all menu items
+        mobileMenuItems.forEach(item => {
+            if (!item.classList.contains('quote-request-link')) {
+            item.classList.remove('active');
+            }
+        });
+        
+        // Add click event listeners to regular menu items
+        regularMenuItems.forEach(item => {
+            item.addEventListener('click', function() {
+            if (!this.classList.contains('quote-request-link')) {
+                // Remove active class from all menu items
+                mobileMenuItems.forEach(menuItem => menuItem.classList.remove('active'));
+                // Add active class to the clicked menu item
+                this.classList.add('active');
+            }
+            });
+        });
+        
+        // Handle quote request button in mobile menu and other places
+        // Select all quote request buttons and links
+        const quoteRequestBtns = document.querySelectorAll('.quote-request-btn, .quote-request-link');
+        const quoteRequestModal = document.getElementById('quoteRequestModal');
+        const closeQuoteModalBtn = document.getElementById('closeQuoteModal');
+        
+        // Function to open the quote modal
+        function openQuoteModal(e) {
+            e.preventDefault();
+            if (quoteRequestModal) {
+            quoteRequestModal.classList.remove('hidden');
+            quoteRequestModal.classList.add('fade-in');
+            document.body.classList.add('overflow-hidden');
+            }
+        }
+        
+        // Function to close the quote modal
+        function closeQuoteModal() {
+            if (quoteRequestModal) {
+            quoteRequestModal.classList.remove('fade-in');
+            quoteRequestModal.classList.add('fade-out');
+            document.body.classList.remove('overflow-hidden');
+            
+            setTimeout(() => {
+            quoteRequestModal.classList.add('hidden');
+            quoteRequestModal.classList.remove('fade-out');
+            }, 300);
+            }
+        }
+        
+        // Add click event listeners to all quote request buttons and links
+        if (quoteRequestBtns.length > 0) {
+            quoteRequestBtns.forEach(btn => {
+            btn.addEventListener('click', openQuoteModal);
+            });
+        }
+        
+        // Add click event listener to close button
+        if (closeQuoteModalBtn) {
+            closeQuoteModalBtn.addEventListener('click', closeQuoteModal);
+        }
+        
+        // Close modal when clicking outside the modal content
+        if (quoteRequestModal) {
+        quoteRequestModal.addEventListener('click', function(e) {
+            if (e.target === quoteRequestModal) {
+            closeQuoteModal();
+            }
+        });
+        }
+        
+        // Close modal when pressing Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && quoteRequestModal && !quoteRequestModal.classList.contains('hidden')) {
+            closeQuoteModal();
+            }
+        });
+        
+        // Partners Modal functionality
+        const partnersModalBtn = document.getElementById('partnersModalBtn');
+        const partnersModal = document.getElementById('partnersModal');
+        const closePartnersModal = document.getElementById('closePartnersModal');
+        
+        // Function to open the partners modal
+        function openPartnersModal(e) {
+            e.preventDefault();
+            if (partnersModal) {
+            partnersModal.classList.remove('hidden');
+            document.body.classList.add('overflow-hidden');
+            }
+        }
+        
+        // Function to close the partners modal
+        function closePartnersModalFunc() {
+            if (partnersModal) {
+            partnersModal.classList.add('hidden');
+            document.body.classList.remove('overflow-hidden');
+            }
+        }
+        
+        // Add click event listener to partners modal button
+        if (partnersModalBtn) {
+            partnersModalBtn.addEventListener('click', openPartnersModal);
+        }
+        
+        // Add click event listener to close button
+        if (closePartnersModal) {
+            closePartnersModal.addEventListener('click', closePartnersModalFunc);
+        }
+        
+        // Close modal when clicking outside the modal content
+        if (partnersModal) {
+            partnersModal.addEventListener('click', function(e) {
+            if (e.target === partnersModal) {
+                closePartnersModalFunc();
+            }
+            });
+        }
+        
+        // Close modal when pressing Escape key (update existing handler)
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+            if (quoteRequestModal && !quoteRequestModal.classList.contains('hidden')) {
+                closeQuoteModal();
+            }
+            if (partnersModal && !partnersModal.classList.contains('hidden')) {
+                closePartnersModalFunc();
+            }
+            }
+        });
+        
+        // Track active menu items based on scroll position
+        const sections = {
+            services: document.getElementById('services'),
+            languages: document.getElementById('languages'),
+            pricing: document.getElementById('pricing'),
+            'case-studies': document.getElementById('case-studies'), 
+            faq: document.getElementById('faq'),
+            contact: document.getElementById('contact')
+        };
+        
+        window.addEventListener('scroll', function() {
+            // Get the current scroll position (add some offset to avoid triggering right at the top)
+            const scrollPosition = window.scrollY + 100; // Small offset for better detection
+            
+            // First remove active class from all menu items
+            mobileMenuItems.forEach(item => {
+            if (!item.classList.contains('quote-request-link')) {
+                item.classList.remove('active');
+            }
+            });
+            
+            // Find which section is currently in view
+            let foundActiveSection = false;
+            for (const [id, section] of Object.entries(sections)) {
+            if (section) {
+                const sectionTop = section.offsetTop;
+                const sectionBottom = sectionTop + section.offsetHeight;
+                
+                // Check if we're currently in this section
+                if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
+                foundActiveSection = true;
+                
+                // Update active menu item for this section
+                mobileMenuItems.forEach(item => {
+                    const href = item.getAttribute('href');
+                    if (href === `#${id}`) {
+                    item.classList.add('active');
+                    }
+                });
+                break;
+                }
+            }
+            }
+            
+            // If no section is active, ensure all menu items are inactive
+            if (!foundActiveSection) {
+            mobileMenuItems.forEach(item => {
+                if (!item.classList.contains('quote-request-link')) {
+                item.classList.remove('active');
+            }
+            });
+        }
+        });
+        
+        // Add resize event listener to handle screen size changes
+        window.addEventListener('resize', function() {
+            // If window is resized to desktop size and mobile menu is open, close it
+            if (window.innerWidth >= 768 && mobileMenu && mobileMenu.classList.contains('show')) {
+            closeMenu();
+            }
+            
+            // If window is resized to mobile and language dropdown is open, close it
+            if (window.innerWidth < 768 && languageDropdown && languageDropdown.classList.contains('show')) {
+            languageDropdown.classList.remove('show');
+            }
+        });
+        
+        // Trigger scroll handler on page load to set initial active state
+        window.dispatchEvent(new Event('scroll'));
+        });
+    </script>
+
+    <script>
+        // Modal functionality for carousel images
+        document.addEventListener('DOMContentLoaded', function() {
+        // ... existing image modal code ...
+        });
+    </script>
+
+    <script>
+        // Custom scrolling with padding adjustment
+        document.addEventListener('DOMContentLoaded', function() {
+        // Function to scroll to element with offset
+        function scrollToElement(elementId, offset = 30) {
+            const element = document.getElementById(elementId);
+            if (!element) return;
+            
+            const elementPosition = element.getBoundingClientRect().top;
+            const offsetPosition = elementPosition + window.pageYOffset - offset;
+            
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: 'smooth'
+                });
+                }
+        
+        // Update the service button click handler
+        const serviceButtons = document.querySelectorAll('button[onclick*="#services"]');
+        serviceButtons.forEach(button => {
+            button.setAttribute('onclick', '');
+            button.addEventListener('click', function() {
+            scrollToElement('services');
+            });
+        });
+        
+        // Update menu items with hash links
+        document.querySelectorAll('.menu-item[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href').substring(1);
+            scrollToElement(targetId);
+            });
+        });
+        });
+    </script>
+
+    <script>
+        // Section fade-in animation
+        document.addEventListener('DOMContentLoaded', function() {
+        // Add fade-in-section class to all sections
+        const sections = document.querySelectorAll('section');
+        sections.forEach(section => {
+            if (!section.classList.contains('fade-in-section')) {
+            section.classList.add('fade-in-section');
+            }
+        });
+        
+        // Function to check if element is in viewport
+        function checkIfInView() {
+            const sections = document.querySelectorAll('.fade-in-section');
+            sections.forEach(section => {
+            // Get section's position relative to the viewport
+            const rect = section.getBoundingClientRect();
+            const windowHeight = window.innerHeight || document.documentElement.clientHeight;
+            
+            // Check if section is in view (partial visibility is enough)
+            const isInView = (
+                rect.top <= windowHeight * 0.75 && // Section has entered 75% from the top
+                rect.bottom >= 0 // Bottom of section is not above the viewport
+            );
+            
+            if (isInView) {
+                section.classList.add('is-visible');
+            }
+            });
+        }
+        
+        // Run on initial load
+        checkIfInView();
+        
+        // Run on scroll
+        window.addEventListener('scroll', checkIfInView, { passive: true });
+        
+        // Run on resize
+        window.addEventListener('resize', checkIfInView, { passive: true });
+        });
+    </script>
+    <script src="{% static 'js/main.js' %}"></script>
+    <script src="https://unpkg.com/@material-tailwind/html@3.0.0-beta.7/dist/material-tailwind.umd.min.js" defer></script>
+</body>
+</html>
