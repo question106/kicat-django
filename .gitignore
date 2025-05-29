@@ -48,6 +48,9 @@ ENV/
 # Docker
 docker-volumes/
 
+# Nginx (conflicts with VPS deployment)
+nginx/
+
 # Distribution / packaging
 .Python
 build/
@@ -154,3 +157,7 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+
+vps-performance-guide.md
+multi-site-deployment.md
